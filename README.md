@@ -42,6 +42,14 @@ Showspot is an online ticket booking platform that allows users to browse and bo
 - Git & GitHub
 - Postman (for API testing)
 - MySQL Workbench
----
+  
+### Steps:
+1. Clone the repo
+git clone https://github.com/akshayaa567/Event-ticket-booking-Showspot.git
+2. Run MySQL DB and configure `application.properties`
+3. Run Spring Boot backend
+4. Run frontend (HTML-based)
+5. Access via browser
 
-
+## License
+This project is for educational/demo purposes.
