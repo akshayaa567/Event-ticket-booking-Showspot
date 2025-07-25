@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Processing Payment</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+  <h2>Redirecting to Razorpay...</h2>
+
+  <script>
+    async function startPayment() {
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // 🔁 Common params from both seatselect.html and stadiumbook.html
+      const eventTitle = urlParams.get('movie') || urlParams.get('title');
+      const poster = urlParams.get('poster') || urlParams.get('image');
+      const date = urlParams.get('date') || '';
+      const time = urlParams.get('time') || '';
+      const seats = urlParams.get('seats') || 'General';
+      const amount = urlParams.get('amount');
+      const userEmail = urlParams.get('userEmail') || 'user@example.com';
+      const eventType = urlParams.get('type') || 'movie';
+
+      try {
+        // 1. Create Razorpay order
+        const res = await fetch(`http://localhost:8080/api/payment/createOrder?amount=${amount}`, {
+          method: "POST"
+        });
+
+        const data = await res.json();
+
+        const options = {
+          key: "rzp_test_J18nx5IAPtY37e",
+          amount: data.amount,
+          currency: data.currency,
+          name: "Showspot",
+          description: "Event Booking",
+          image: poster,
+          order_id: data.id,
+          handler: async function (response) {
+            // 2. Save booking in backend
+            const bookingRes = await fetch("http://localhost:8080/api/bookings/create", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                movieName: eventTitle,
+                userEmail: userEmail,
+                numberOfTickets: seats.split(',').length,
+                totalAmount: amount,
+                paymentId: response.razorpay_payment_id
+              })
+            });
+
+            const bookingData = await bookingRes.json();
+
+            // 3. Redirect to confirmation
+            const redirectURL = `ticketc.html?bookingId=${bookingData.id}&eventTitle=${encodeURIComponent(eventTitle)}&venue=${encodeURIComponent("Suchitra Prabhat Cinemas")}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&seats=${encodeURIComponent(seats)}&totalAmount=${amount}&image=${encodeURIComponent(poster)}&subtotal=${amount}&convenienceFee=20.00&taxes=9.00&type=${eventType}&language=Telugu&audio=Dolby`;
+
+            window.location.href = redirectURL;
+          },
+          prefill: {
+            name: "Akshaya",
+            email: userEmail
+          },
+          theme: {
+            color: "#3399cc"
+          }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+
+      } catch (error) {
+        alert("Something went wrong: " + error.message);
+      }
+    }
+
+    window.onload = startPayment;
+  </script>
+</body>
+</html>

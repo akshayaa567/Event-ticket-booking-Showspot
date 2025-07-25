@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About - ShowSpot</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    /* Custom Color Variables */
+    :root {
+        --primary-dark: #0f0f13;
+        --primary-darker: #0a0a0e;
+        --accent-blue: #4070f4; /* Main blue */
+        --accent-blue-hover: #3360cc; /* Darker blue for hover */
+        --secondary-dark: #1a1a2e;
+        
+        /* Text Colors */
+        --text-light: #f8f9fa;
+        --text-muted: #adb5bd;
+        --text-dark: #212529; /* Not directly used, but kept for context */
+        
+        /* Background Colors */
+        --bg-card: #1e1e2f; /* Base for glassmorphism sections */
+        --bg-section: #141420; /* Darker section background */
+        --bg-footer: #0a0a12; /* Footer background */
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-dark) 50%, var(--secondary-dark) 100%);
+      color: var(--text-light); /* Default text color for the page */
+      min-height: 100vh;
+    }
+
+    /* Glassmorphism effect base class */
+    .glass-effect {
+        background: rgba(30, 30, 47, 0.7); /* Semi-transparent background using bg-card rgba */
+        backdrop-filter: blur(10px); /* Glassmorphism blur effect */
+        -webkit-backdrop-filter: blur(10px); /* Safari support */
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for glass effect */
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Enhanced shadow */
+    }
+
+    /* Navbar Styling */
+    .navbar {
+        background-color: rgba(30, 30, 47, 0.7) !important; /* Apply glassmorphism background to navbar */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-color: rgba(255, 255, 255, 0.1) !important; /* Subtle border for navbar */
+    }
+
+    .navbar-brand {
+        color: var(--accent-blue) !important; /* Brand name in accent blue */
+    }
+
+    .nav-link {
+        color: var(--text-light) !important; /* Nav links in light text color */
+        transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: var(--accent-blue) !important; /* Nav links hover in accent blue */
+    }
+
+    .navbar-toggler-icon {
+        /* Custom toggler icon for dark background */
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.7%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+
+    /* Buttons in Navbar */
+    .btn-outline-primary {
+        border-color: var(--accent-blue) !important;
+        color: var(--accent-blue) !important;
+        transition: all 0.3s ease;
+    }
+    .btn-outline-primary:hover {
+        background-color: var(--accent-blue) !important;
+        color: white !important;
+    }
+
+    .btn-primary {
+        background-color: var(--accent-blue) !important;
+        border-color: var(--accent-blue) !important;
+        color: white !important;
+        transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+        background-color: var(--accent-blue-hover) !important;
+        border-color: var(--accent-blue-hover) !important;
+    }
+
+
+    .hero-section {
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                  url('aboutus.webp') center/cover no-repeat; /* Placeholder image for consistency */
+      color: white;
+      text-align: center;
+      padding: 120px 20px;
+    }
+
+    .hero-section h1 {
+        color: var(--text-light); /* Ensure hero title is light */
+    }
+
+    .hero-section p {
+        color: var(--text-muted); /* Ensure hero paragraph is muted light */
+    }
+
+    .category-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Darker shadow for dark theme */
+      transition: transform 0.3s ease;
+      /* Apply glassmorphism to category cards */
+      background: rgba(30, 30, 47, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .category-card:hover {
+      transform: scale(1.03);
+    }
+
+    .category-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      filter: brightness(50%); /* Darken images for better text contrast */
+    }
+
+    .category-card h5 {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      color: var(--text-light); /* Ensure consistent light text for category titles */
+      font-weight: 600;
+      z-index: 1; /* Ensure text is above darkened image */
+    }
+
+    .section-title {
+      font-weight: 700; /* Slightly bolder for titles */
+      color: var(--text-light); /* Light text for titles */
+    }
+
+    .section-subtitle {
+      color: var(--text-muted); /* Muted text for subtitles */
+      margin-top: -10px;
+    }
+
+    /* Adjust color for the mission section paragraph */
+    .mission-section p {
+        color: var(--text-muted) !important;
+    }
+
+    .icon-box i {
+      font-size: 2rem;
+      color: var(--accent-blue); /* Icons in accent blue */
+    }
+
+    .team-card img { /* Keeping this for future additions */
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+    }
+
+    footer {
+      background-color: var(--bg-footer); /* Footer background from variable */
+      color: var(--text-light); /* Footer text in light color */
+      padding: 30px 0;
+    }
+
+    footer a {
+      color: var(--text-light); /* Footer links in light color */
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+      color: var(--accent-blue); /* Footer links hover in accent blue */
+    }
+    
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top shadow-sm border-bottom">
+    <div class="container py-2">
+      <a class="navbar-brand" href="#"> <img src="images/logo.png" alt="ShowSpot Logo" height="60"> </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center me-3">
+          <li class="nav-item px-2"><a class="nav-link" href="movieslist.html">Movies</a></li>
+          <li class="nav-item px-2"><a class="nav-link" href="concerts.html">Concerts</a></li>
+          <li class="nav-item px-2"><a class="nav-link" href="stadiumbook.html">Sports</a></li>
+          <li class="nav-item px-2"><a class="nav-link" href="comedy.html">Comedy</a></li>
+          <li class="nav-item px-2"><a class="nav-link" href="aboutpage.html">About</a></li>
+          <li class="nav-item px-2"><a class="nav-link" href="contactpage.html">Contact</a></li>
+        </ul>
+        <div class="d-flex gap-2">
+          <a href="loginpage.html" class="btn btn-outline-primary">Login</a>
+          <a href="signinpage.html" class="btn btn-primary">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <h1 class="display-5 fw-bold">About ShowSpot</h1>
+      <p class="lead mt-3">India's premier entertainment booking platform, connecting millions of fans with their favorite events</p>
+    </div>
+  </section>
+
+  <!-- What We Cover -->
+  <section class="container text-center my-5">
+    <h3 class="section-title">What We Cover</h3>
+    <p class="section-subtitle">From blockbuster movies to live concerts</p>
+    <div class="row g-4 mt-4">
+      <div class="col-md-3"><div class="category-card"><img src="images/concerts.jpg" alt="Concerts"><h5>Concerts</h5></div></div>
+      <div class="col-md-3"><div class="category-card"><img src="images/movies.jpg" alt="Movies"><h5>Movies</h5></div></div>
+      <div class="col-md-3"><div class="category-card"><img src="images/sports.jpg" alt="Sports"><h5>Sports</h5></div></div>
+      <div class="col-md-3"><div class="category-card"><img src="images/standupcomedy.jpg" alt="Comedy"><h5>Comedy</h5></div></div>
+    </div>
+  </section>
+  <!-- Mission Section -->
+  <section class="container text-center my-5 mission-section">
+    <h3 class="section-title">Our Mission</h3>
+    <p class="section-subtitle">Empowering entertainment experiences</p>
+    <p class="px-4">At ShowSpot, our mission is to simplify how people access entertainment by offering a seamless and intuitive booking experience. Whether it’s movies, concerts, sports, or comedy – we make it easy and enjoyable to reserve your spot!</p>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="container text-center my-5">
+    <h3 class="section-title">Why Choose ShowSpot?</h3>
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="icon-box mb-3"><i class="bi bi-lightning-charge-fill"></i></div>
+        <h5>Fast Booking</h5>
+        <p class="text-muted">Instant ticket confirmation and a hassle-free checkout process.</p>
+      </div>
+      <div class="col-md-4">
+        <div class="icon-box mb-3"><i class="bi bi-people-fill"></i></div>
+        <h5>Trusted by Millions</h5>
+        <p class="text-muted">A reliable platform used by over 10 million fans across India.</p>
+      </div>
+      <div class="col-md-4">
+        <div class="icon-box mb-3"><i class="bi bi-phone-fill"></i></div>
+        <h5>Mobile Friendly</h5>
+        <p class="text-muted">Optimized for mobile devices – book anytime, anywhere.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center mt-5">
+    <div class="container">
+      <p class="mb-2">© 2025 ShowSpot. All Rights Reserved.</p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="#"><i class="bi bi-facebook fs-5"></i></a>
+        <a href="#"><i class="bi bi-instagram fs-5"></i></a>
+        <a href="#"><i class="bi bi-twitter fs-5"></i></a>
+        <a href="#"><i class="bi bi-envelope-fill fs-5"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

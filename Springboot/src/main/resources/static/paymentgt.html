@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Confirmation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f4f4f4;
+      padding: 50px;
+    }
+    .ticket-box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    .success {
+      color: green;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .ticket-info {
+      text-align: left;
+      margin-top: 20px;
+    }
+    .ticket-info p {
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticket-box">
+    <div class="success">✅ Payment Successful!</div>
+    <div class="ticket-info">
+      <p><strong>Payment ID:</strong> <span id="paymentId"></span></p>
+      <p><strong>Order ID:</strong> <span id="orderId"></span></p>
+      <p><strong>Amount Paid:</strong> ₹<span id="amountPaid">500</span></p>
+      <p><strong>Event:</strong> Showspot Movie Ticket</p>
+      <p><strong>Status:</strong> Confirmed</p>
+    </div>
+  </div>
+
+  <script>
+    // Parse Razorpay response from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentId = urlParams.get('payment_id');
+    const orderId = urlParams.get('order_id');
+
+    document.getElementById("paymentId").textContent = paymentId || "N/A";
+    document.getElementById("orderId").textContent = orderId || "N/A";
+  </script>
+
+</body>
+</html>

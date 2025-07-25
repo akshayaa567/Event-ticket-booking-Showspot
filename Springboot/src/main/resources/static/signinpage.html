@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShowSpot - Signup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Your existing CSS (as provided) */
+        :root {
+            --primary-dark: #0f0f13;
+            --primary-darker: #0a0a0e;
+            --accent-blue: #4070f4; /* Main blue */
+            --accent-blue-hover: #3360cc; /* Darker blue for hover */
+            --secondary-dark: #1a1a2e;
+            
+            /* Text Colors */
+            --text-light: #f8f9fa;
+            --text-muted: #adb5bd;
+            --text-dark: #212529;
+            
+            /* Background Colors */
+            --bg-card: #1e1e2f; /* Using this as base for glassmorphism */
+            --bg-section: #141420;
+            --bg-footer: #0a0a12;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* A more modern font */
+            /* Updated background for a professional look */
+            background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-dark) 50%, var(--secondary-dark) 100%);
+            color: var(--text-light); /* Default text color */
+            min-height: 100vh; /* Ensure full height */
+            display: flex;
+            align-items: center; /* Center content vertically */
+            justify-content: center; /* Center content horizontally */
+            padding: 20px; /* Add some padding around the form */
+        }
+
+        .form-container {
+            max-width: 600px;
+            width: 100%; /* Make it responsive */
+            background: rgba(30, 30, 47, 0.7); /* Semi-transparent background using bg-card */
+            -webkit-backdrop-filter: blur(10px); /* Glassmorphism blur effect */
+            backdrop-filter: blur(10px); /* Safari support */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for glass effect */
+            border-radius: 15px; /* More rounded corners */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Enhanced shadow */
+            padding: 30px;
+            margin: auto; /* Center with margin auto */
+        }
+
+        .form-container h3 {
+            color: var(--accent-blue); /* Highlight heading with accent blue */
+            font-weight: 700;
+        }
+
+        .form-container p.text-muted {
+            color: var(--text-muted) !important; /* Ensure muted text color */
+        }
+
+        .form-label {
+            color: var(--text-light); /* Labels are light for contrast */
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .form-control,
+        .form-select {
+            background-color: rgba(255, 255, 255, 0.1); /* Transparent input fields */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border for inputs */
+            color: var(--text-light); /* Input text color */
+            padding: 12px 15px; /* Larger padding for better touch targets */
+            border-radius: 8px; /* Rounded input fields */
+            transition: all 0.3s ease; /* Smooth transition on focus */
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted); /* Placeholder text color */
+            opacity: 0.7; /* Make placeholder slightly transparent */
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background-color: rgba(255, 255, 255, 0.15); /* Slightly brighter on focus */
+            border-color: var(--accent-blue); /* Blue border on focus */
+            box-shadow: 0 0 0 0.25rem rgba(64, 112, 244, 0.3); /* Blue glow on focus (using rgba of accent-blue) */
+            color: var(--text-light); /* Ensure text color remains light on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        /* Style for the Signup Button */
+        .btn-signup {
+            background: var(--accent-blue); /* Accent blue background */
+            color: white;
+            padding: 1rem 2rem; /* Larger padding for a more prominent button */
+            font-size: 1.2rem; /* Larger font size */
+            font-weight: 600;
+            border: none;
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer;
+            transition: all 0.3s ease; /* Smooth transition for hover */
+            width: 100%; /* Full width button */
+            margin-top: 20px; /* Space above the button */
+            letter-spacing: 0.05em; /* Slightly spaced letters */
+            box-shadow: 0 4px 15px rgba(64, 112, 244, 0.2); /* Subtle shadow (using rgba of accent-blue) */
+        }
+
+        .btn-signup:hover {
+            background: var(--accent-blue-hover); /* Darker blue on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+            box-shadow: 0 6px 20px rgba(64, 112, 244, 0.4); /* More prominent shadow on hover (using rgba of accent-blue) */
+        }
+
+        .form-check-label {
+            color: var(--text-light); /* Label for checkbox */
+            margin-left: 8px;
+        }
+
+        .error {
+            color: var(--accent-blue); /* Error messages in blue */
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        /* Password toggle icon styling */
+        .input-group-text {
+            background-color: rgba(255, 255, 255, 0.1); /* Match input background */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Match input border */
+            color: var(--text-light); /* Icon color */
+            border-left: none; /* No border between input and icon */
+            cursor: pointer;
+            border-top-right-radius: 8px; /* Match input border radius */
+            border-bottom-right-radius: 8px;
+        }
+        
+        .input-group > .form-control:focus + .input-group-text {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 0.25rem rgba(64, 112, 244, 0.3);
+            z-index: 1; /* Keep icon in front on focus */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+                margin: 20px auto; /* Adjust margin for smaller screens */
+            }
+            .form-label {
+                font-size: 0.95rem;
+            }
+            .form-control, .form-select {
+                padding: 10px 12px;
+            }
+            .btn-signup {
+                padding: 0.9rem 1.5rem;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 15px;
+            }
+            .form-label {
+                font-size: 0.9rem;
+            }
+            .form-control, .form-select {
+                padding: 8px 10px;
+            }
+            .btn-signup {
+                padding: 0.8rem 1.2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="form-container">
+    <h3 class="text-center mb-4"><strong>Join ShowSpot</strong></h3>
+    <p class="text-center text-muted">Create your account to start booking amazing events</p>
+    <form id="signupForm" novalidate>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
+                <div class="error" id="firstNameError"></div>
+            </div>
+            <div class="col-md-6">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
+                <div class="error" id="lastNameError"></div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter your email">
+            <div class="error" id="emailError"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="phone" placeholder="Enter phone number">
+            <div class="error" id="phoneError"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+                <input type="password" class="form-control" id="password" placeholder="Create a password">
+                <span class="input-group-text" onclick="togglePassword('password', this)">👁️</span>
+            </div>
+            <div class="error" id="passwordError"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <div class="input-group">
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password">
+                <span class="input-group-text" onclick="togglePassword('confirmPassword', this)">👁️</span>
+            </div>
+            <div class="error" id="confirmPasswordError"></div>
+        </div>
+
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="terms">
+            <label class="form-check-label" for="terms">
+                I accept the Terms and Conditions and Privacy Policy
+            </label>
+            <div class="error" id="termsError"></div>
+        </div>
+
+        <button type="submit" class="btn btn-signup">Create Account</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Function to toggle password visibility
+    function togglePassword(fieldId, icon) {
+        const field = document.getElementById(fieldId);
+        if (field.type === "password") {
+            field.type = "text";
+            icon.textContent = "🙈"; // Change icon to 'eye-slash'
+        } else {
+            field.type = "password";
+            icon.textContent = "👁️"; // Change icon to 'eye'
+        }
+    }
+
+    // Function to display a Bootstrap modal
+    function showModal(title, message, isSuccess) {
+        // Remove existing modals to prevent duplicates
+        const existingModal = document.getElementById('responseModal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'modal fade';
+        modalDiv.id = 'responseModal';
+        modalDiv.setAttribute('tabindex', '-1');
+        modalDiv.setAttribute('aria-labelledby', 'responseModalLabel');
+        modalDiv.setAttribute('aria-hidden', 'true');
+
+        modalDiv.innerHTML = `
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark text-light border-0" style="backdrop-filter: blur(10px); background: rgba(30, 30, 47, 0.8);">
+                    <div class="modal-header border-bottom-0">
+                        <h5 class="modal-title" id="responseModalLabel" style="color: ${isSuccess ? 'var(--accent-blue)' : '#dc3545'};">${title}</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ${message}
+                    </div>
+                    <div class="modal-footer border-top-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: var(--secondary-dark); border-color: var(--secondary-dark);">Close</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modalDiv);
+
+        const modal = new bootstrap.Modal(document.getElementById('responseModal'));
+        modal.show();
+
+        // Remove the modal from DOM after it's hidden to clean up
+        modalDiv.addEventListener('hidden.bs.modal', function () {
+            modalDiv.remove();
+        });
+    }
+
+    document.getElementById("signupForm").addEventListener("submit", async function (e) {
+        e.preventDefault(); // Prevent default form submission
+
+        let valid = true; // Flag to track form validity
+
+        // Clear all previous error messages
+        document.querySelectorAll(".error").forEach(el => el.textContent = "");
+
+        // Get form input values
+        const firstName = document.getElementById("firstName").value.trim();
+        const lastName = document.getElementById("lastName").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        const terms = document.getElementById("terms").checked;
+
+        // Client-side Validations
+        if (!firstName) {
+            document.getElementById("firstNameError").textContent = "First name is required.";
+            valid = false;
+        }
+
+        if (!lastName) {
+            document.getElementById("lastNameError").textContent = "Last name is required.";
+            valid = false;
+        }
+
+        if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+            document.getElementById("emailError").textContent = "Enter a valid email address.";
+            valid = false;
+        }
+
+        if (!phone || !/^\d{10}$/.test(phone)) {
+            document.getElementById("phoneError").textContent = "Enter a valid 10-digit phone number.";
+            valid = false;
+        }
+
+        if (!password || password.length < 6) {
+            document.getElementById("passwordError").textContent = "Password must be at least 6 characters long.";
+            valid = false;
+        }
+
+        if (confirmPassword !== password) {
+            document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
+            valid = false;
+        }
+
+        if (!terms) {
+            document.getElementById("termsError").textContent = "You must agree to the Terms and Conditions.";
+            valid = false;
+        }
+
+        // If all client-side validations pass, make the API call
+        if (valid) {
+            const signupData = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phoneNumber: phone, // Make sure this matches your backend DTO field name
+                password: password,
+                confirmPassword: confirmPassword,
+                termsAccepted: terms
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/api/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(signupData),
+                });
+
+                const responseText = await response.text(); // Get raw text response for now
+
+                if (response.ok) { // HTTP status 200-299
+                    showModal("Success!", responseText, true);
+                    document.getElementById("signupForm").reset(); // Clear form on success
+                } else {
+                    let errorMessage = "Registration failed. Please try again.";
+                    if (response.status === 409) { // Conflict (e.g., email/phone already exists)
+                        try {
+                            const errorBody = JSON.parse(responseText);
+                            errorMessage = errorBody.message || errorMessage;
+                        } catch (e) {
+                            errorMessage = responseText; // Use raw text if not JSON
+                        }
+                    } else if (response.status === 400) { // Bad Request (e.g., validation errors)
+                        try {
+                            const errorBody = JSON.parse(responseText);
+                            // If backend sends specific field errors, display them
+                            if (errorBody.errors) {
+                                for (const field in errorBody.errors) {
+                                    if (document.getElementById(field + "Error")) {
+                                        document.getElementById(field + "Error").textContent = errorBody.errors[field];
+                                    }
+                                }
+                                errorMessage = "Please correct the highlighted errors.";
+                            } else {
+                                errorMessage = errorBody.message || errorMessage;
+                            }
+                        } catch (e) {
+                            errorMessage = responseText;
+                        }
+                    } else {
+                        errorMessage = responseText;
+                    }
+                    showModal("Error", errorMessage, false);
+                }
+            } catch (error) {
+                console.error('Network error or problem with fetch operation:', error);
+                showModal("Error", "Could not connect to the server. Please check your network or try again later.", false);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

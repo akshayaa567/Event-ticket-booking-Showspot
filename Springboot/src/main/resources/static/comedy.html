@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comedy Stars</title>
+    <style>
+        /* Define CSS variables for easy customization */
+        :root {
+            --body-bg-color: #000; /* Black background */
+            --heading-color: #2c3e50;
+            --text-color: #333;
+            --secondary-text-color: #555;
+            --card-bg-color: rgba(10, 10, 10, 0.5); /* Changed to a very dark, transparent background to match the screenshot */
+            --card-border-color: rgba(255, 255, 255, 0.1); /* Subtle white border for dark glass */
+            --lang-tag-bg-color: #34495e;
+            --lang-tag-color: white;
+            --button-primary-bg: #1e90ff; /* Dodger Blue for buttons */
+            --button-primary-hover-bg: #007bff; /* Slightly darker blue on hover */
+        }
+
+        /* Body Styles: A serene backdrop for our stars */
+        body {
+            background-color:#000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 30px; /* More generous padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        /* Header Section (contains heading and search bar) */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 95%;
+            max-width: 1300px;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        /* Heading: A striking title */
+        .heading {
+            color: #eee; /* Light text color for dark background */
+            margin-bottom: 0; /* Adjusted margin since it's in a flex container now */
+            font-size: 2.8em; /* Slightly larger for prominence */
+            font-weight: 700;
+            text-shadow: 2px 2px 5px rgba(255,255,255,0.1); /* A softer, more refined shadow */
+            letter-spacing: 0.5px; /* A little breathing room for letters */
+        }
+
+        /* Search Bar */
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+        .navbar {
+    background-color: rgba(30, 30, 30, 0.95) !important; /* Semi-transparent dark for navbar */
+    box-shadow: 0 2px 10px var(--shadow-dark-subtle);
+    border-bottom: 1px solid var(--border-dark);
+    transition: background-color 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--color-accent-blue) !important; /* Brand name in accent blue */
+}
+
+.nav-link {
+    color: var(--color-text-light) !important;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--color-accent-blue-hover) !important; /* Blue on hover */
+}
+:root {
+    --color-accent-blue-hover: #00aaff; /* Example hover blue color */
+    /* ... other variables ... */
+}
+:root {
+    --color-accent-blue: #007bff; /* Or whatever blue color you want */
+    /* ... other variables ... */
+}
+
+/* Additional adjustment for btn-primary1 */
+.btn-primary1 {
+    background-color: var(--color-accent-blue);
+    color: var(--color-text-light);
+    padding: 0.7em 1.4em;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25);
+}
+.btn-primary1:hover {
+    background-color: var(--color-accent-blue-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+
+        .search-input {
+            padding: 10px 15px;
+            border: 1px solid #555;
+            border-radius: 8px;
+            background-color: #333;
+            color: #eee;
+            margin-right: 10px;
+            font-size: 1em;
+        }
+
+        .search-button {
+            background-color: var(--button-primary-bg);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: var(--button-primary-hover-bg);
+        }
+
+        /* Container: Arranging our comedy constellation */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px; /* Adjusted gap to better fit 3 columns like the image */
+            width: 95%; /* Wider container */
+            max-width: 1300px; /* Increased max-width */
+            height: 500px;
+        }
+
+        /* Individual Card: The essence of glass morphism */
+        .card {
+            background-color: rgba(86, 86, 91, 0.868); /* Now using the new dark transparent color */
+            border-radius: 18px; /* Slightly more rounded corners */
+            padding: 20px; /* Adjusted internal padding to match screenshot's card size */
+            text-align: center;
+            width: calc(28.33% - 14px); /* Adjusted width for new gap to achieve 3 columns */
+            box-sizing: border-box;
+            backdrop-filter: blur(15px); /* Stronger blur for a more pronounced glass effect */
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border-color); /* Subtle white border for definition against dark background */
+            box-shadow: 0 10px 40px rgba(244, 243, 245, 0.4); /* Darker, more pronounced shadow for depth on dark background */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out; /* Added border-color to transition */
+        }
+
+        .card:hover {
+            transform: translateY(-8px); /* More pronounced lift on hover */
+            box-shadow: 0 18px 50px rgba(198, 161, 161, 0.6); /* Even deeper shadow on hover */
+            border-color: rgba(255, 255, 255, 0.2); /* Slightly more prominent border on hover */
+        }
+
+        /* Language Tag: A clear distinction */
+        .lang-tag {
+            background-color: red; /* Red background for the button-like shape */
+            color: white; /* White text color */
+            padding: 7px 14px;
+            border-radius: 8px; /* Slightly more rounded tag */
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            align-self: flex-start;
+            font-weight: bold;
+            letter-spacing: 0.7px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for the tag */
+        }
+
+        /* Comedian Image: The focal point */
+        .card img {
+            width: 140px; /* Reverted to closer to original size to match screenshot */
+            height: 140px; /* Reverted to closer to original size to match screenshot */
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 8px solid rgba(255, 255, 255, 0.7); /* Thicker, slightly more opaque white border */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15); /* More pronounced shadow for the image */
+        }
+
+        /* Comedian Name: Bold and clear */
+        .card h2 {
+            color: #eee; /* Light text color for dark background */
+            margin-bottom: 10px;
+            font-size: 1.8em; /* Larger name font */
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        /* Comedian Description: Engaging insights */
+        .card p {
+            color: #bbb; /* Lighter secondary text color for dark background for better readability */
+            font-size: 1.05em; /* Slightly larger description font */
+            line-height: 1.6;
+            margin-bottom: 25px;
+            flex-grow: 1;
+            text-align: justify; /* Justify text for a cleaner look */
+            text-justify: inter-word;
+        }
+
+        /* Book Now Button: Inviting action */
+        .city-btn {
+            background-color: var(--button-primary-bg); /* Dodger Blue as requested */
+            color: white;
+            border: none;
+            padding: 14px 30px; /* Larger button padding */
+            border-radius: 8px; /* More rounded button */
+            cursor: pointer;
+            font-size: 1.15em; /* Slightly larger button text */
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Subtle shadow for the button */
+        }
+
+        .city-btn:hover {
+            background-color: var(--button-primary-hover-bg); /* Slightly darker blue on hover */
+            transform: translateY(-3px); /* More noticeable lift on hover */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2); /* Enhanced shadow on hover */
+        }
+
+        /* Responsive Design: Adapting to all screens */
+        @media (max-width: 1024px) {
+            .card {
+                width: calc(50% - 30px); /* Two columns on tablets (adjusting for 20px gap) */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: center;
+            }
+            .search-container {
+                margin-bottom: 15px;
+            }
+            .card {
+                width: 90%; /* Single column on smaller tablets and mobiles */
+            }
+            .heading {
+                font-size: 2.2em;
+                margin-bottom: 30px; /* Restore margin for stacked layout */
+            }
+            .card img {
+                width: 150px;
+                height: 150px;
+            }
+            .card h2 {
+                font-size: 1.5em;
+            }
+            .card p {
+                font-size: 0.95em;
+            }
+            .city-btn {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            .heading {
+                font-size: 1.8em;
+                margin-bottom: 25px;
+                text-align: center;
+            }
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-input {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            .card {
+                padding: 20px;
+                border-radius: 12px;
+                /* gap is on container, not card */
+            }
+            .card img {
+                width: 120px;
+                height: 120px;
+                border-width: 5px;
+            }
+            .lang-tag {
+                padding: 5px 10px;
+                font-size: 0.8em;
+            }
+            .card h2 {
+                font-size: 1.3em;
+            }
+            .card p {
+                font-size: 0.9em;
+                margin-bottom: 15px;
+            }
+            .city-btn {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1 class="heading">🎭 Top Comedians Lineup</h1>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search comedians...">
+            <button class="search-button">Search</button>
+        </div>
+    </div>
+    <div class="container">
+
+        <div class="card">
+            <div class="lang-tag">ENGLISH</div>
+            <img src="images/AadarMalik.jpg" alt="Aadar Malik">
+            <h2>AADAR MALIK</h2>
+            <p>Catch Aadar Malik's sharp wit and musical comedy live!</p>
+            <button class="city-btn">Book Now</button>
+        </div>
+
+        <div class="card">
+            <div class="lang-tag">ENGLISH</div>
+            <img src="images/Aaditya-Kulshreshth-Kullu-280x280 .jpg" alt="Aaditya Kullu">
+            <h2>AADITYA KULLU</h2>
+            <p>Experience Aaditya Kullu's hilarious observations and unique storytelling.</p>
+            <button class="city-btn">Book Now</button>
+        </div>
+
+        <div class="card">
+            <div class="lang-tag">ENGLISH</div>
+            <img src="images/AkashGupta-280x280.jpg" alt="Aakash Gupta">
+            <h2>AAKASH GUPTA</h2>
+            <p>Don't miss Aakash Gupta's energetic and relatable stand-up!</p>
+            <button class="city-btn">Book Now</button>
+        </div>
+
+        <div class="card">
+            <div class="lang-tag">HINDI</div>
+            <img src="images/Abhishek_Walia_kgajlz.jpg" alt="Abhishek Wala">
+            <h2>ABHISHEK WALA</h2>
+            <p>Laugh out loud with Abhishek Wala's witty Hindi comedy.</p>
+            <button class="city-btn">Book Now</button>
+        </div>
+
+        <div class="card">
+            <div class="lang-tag">HINDI</div>
+            <img src="images/Jitesh-Hingorani-280x280.jpg" alt="Jitesh Hingorani">
+            <h2>JITESH HINGORANI</h2>
+            <p>Get ready for Jitesh Hingorani's insightful and observational humor.</p>
+            <button class="city-btn">Book Now</button>
+        </div>
+
+        <div class="card">
+            <div class="lang-tag">ENGLISH</div>
+            <img src="images/TarangHardikar-280x280.jpg" alt="Tarang Hardikar">
+            <h2>TARANG HARDIKAR</h2>
+            <p>Enjoy Tarang Hardikar's clever jokes and spontaneous charm.</p>
+            <button class="city-btn">Book Now</button>
+        </div>
+
+        <div class="card">
+            <div class="lang-tag">HINDI</div>
+            <img src="images/Yashwardhan-Choudhary-1-280x280.jpg" alt="Yashwardhan Choudhary">
+            <h2>YASHWARDHAN CHOUDARY</h2>
+            <p>Witness Yashwardhan Choudhary's hilarious take on everyday life!</p>
+            <button class="city-btn">Book Now</button>
+        </div>
+
+        <div class="card">
+            <div class="lang-tag">ENGLISH</div>
+            <img src="images/Sonali-500x500.jpg" alt="Sonali Thakker">
+            <h2>SONALI THAKKER</h2>
+            <p>Join Sonali Thakker for an evening of relatable and witty comedy.</p>
+            <button class="city-btn">Book Now</button>
+        </div>
+
+        <div class="card">
+            <div class="lang-tag">ENGLISH</div>
+            <img src="images/Shreya-Priyam-Roy-280x280.jpg" alt="Shreya Priyam Roy">
+            <h2>SHREYA PRIYAM ROY</h2>
+            <p>Prepare for big laughs with Shreya Priyam Roy's engaging performance.</p>
+            <button class="city-btn">Book Now</button>
+        </div>
+
+    </div>
+</body>
+</html>

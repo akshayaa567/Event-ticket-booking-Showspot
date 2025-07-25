@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Game Show Booking</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <style>
+    /* New CSS Variables for easier theming */
+    :root {
+      --body-bg: #1a1a1a; /* Dark background for a sleek feel */
+      --text-color: #e0e0e0; /* Light grey for general text */
+      --heading-color: #00aaff; /* Vibrant blue for main headings */
+      --card-bg: rgba(255, 255, 255, 0.1); /* Translucent white for glassmorphism */
+      --card-border: rgba(255, 255, 255, 0.2);
+      --card-shadow: rgba(0, 0, 0, 0.4); /* Stronger shadow for depth */
+      --button-primary-bg: #007bff; /* Blue for primary button */
+      --button-primary-hover-bg: #0056b3; /* Darker blue on hover */
+      --button-text-color: #ffffff; /* White text for buttons */
+      --modal-bg: rgba(255, 255, 255, 0.15); /* Translucent white for modal */
+      --modal-header-bg: #007bff; /* Blue header for modal */
+      --modal-title-color: #ffffff; /* White title for modal header */
+      --input-border-color: rgba(255, 255, 255, 0.3);
+      --input-focus-shadow: rgba(0, 123, 255, 0.4);
+    }
+
+    body {
+      background-color: var(--body-bg);
+      color: var(--text-color);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .container {
+        padding-top: 4rem; /* More top padding */
+        padding-bottom: 4rem; /* More bottom padding */
+    }
+    h1 {
+        color: var(--heading-color);
+        font-weight: 700;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+    .card {
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      border: 1px solid var(--card-border); /* Added a subtle border */
+      box-shadow: 0 8px 16px var(--card-shadow); /* Enhanced shadow */
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: all 0.3s ease; /* Smooth transition for hover effects */
+      backdrop-filter: blur(10px); /* Glassmorphism blur effect */
+      -webkit-backdrop-filter: blur(10px); /* For Safari */
+      border-radius: 15px; /* Rounded corners for glassmorphism */
+    }
+    .card:hover {
+        transform: translateY(-5px); /* Lift card slightly on hover */
+        box-shadow: 0 12px 24px var(--card-shadow); /* More pronounced shadow on hover */
+    }
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.4s ease-in-out;
+      border-bottom: 1px solid var(--card-border); /* Border below image */
+      border-top-left-radius: 15px; /* Match card border radius */
+      border-top-right-radius: 15px; /* Match card border radius */
+    }
+    .card-img-top:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+    .card-body {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem; /* Increased padding inside card body */
+    }
+    .card-title {
+        color: var(--heading-color);
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+    .card-text {
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+    }
+    .btn-primary {
+      background-color: var(--button-primary-bg);
+      border: none;
+      width: 100%;
+      margin-top: auto;
+      color: var(--button-text-color);
+      padding: 0.75rem 1rem; /* Larger buttons */
+      font-size: 1.1rem; /* Slightly larger font for buttons */
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      border-radius: 8px; /* Rounded buttons */
+    }
+    .btn-primary:hover {
+      background-color: var(--button-primary-hover-bg);
+      transform: translateY(-2px); /* Slight lift on hover */
+    }
+    .btn-primary:active {
+        transform: translateY(0); /* Reset on click */
+        background-color: var(--button-primary-hover-bg);
+    }
+
+    /* Modal Styling */
+    .modal-content {
+        background-color: var(--modal-bg);
+        color: var(--text-color);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        backdrop-filter: blur(15px); /* Glassmorphism blur for modal */
+        -webkit-backdrop-filter: blur(15px); /* For Safari */
+        border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border for modal */
+    }
+    .modal-header {
+        background-color: var(--modal-header-bg);
+        color: var(--modal-title-color);
+        border-bottom: none;
+        border-radius: 14px 14px 0 0; /* Slightly smaller to fit within modal radius */
+        padding: 1.5rem;
+    }
+    .modal-title {
+        color: var(--modal-title-color);
+        font-weight: 600;
+    }
+    .btn-close {
+        filter: invert(1); /* Makes Bootstrap close button white */
+    }
+    .modal-body {
+        padding: 2rem;
+    }
+    .form-label {
+        font-weight: 500;
+        color: var(--text-color);
+    }
+    .form-control {
+        background-color: rgba(255, 255, 255, 0.1); /* Translucent input background */
+        border-color: var(--input-border-color);
+        color: var(--text-color);
+        box-shadow: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.15); /* Slightly less translucent on focus */
+        border-color: var(--modal-header-bg);
+        box-shadow: 0 0 0 0.25rem var(--input-focus-shadow);
+        color: var(--text-color); /* Ensure text remains visible */
+    }
+    .modal-footer {
+        border-top: none;
+        padding: 1.5rem;
+    }
+
+
+    /* Responsive Adjustments */
+
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) {
+      .col-md-4 {
+        flex: 0 0 auto;
+        width: 33.333333%;
+      }
+    }
+
+    /* Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) and (max-width: 991.98px) {
+      .col-md-4 {
+        flex: 0 0 auto;
+        width: 50%; /* Two columns per row */
+      }
+      .card-img-top {
+        height: 180px; /* Slightly smaller images */
+      }
+      h1 {
+        font-size: 2.5rem; /* Adjust heading size */
+      }
+    }
+
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) and (max-width: 767.98px) {
+      .col-md-4 {
+        flex: 0 0 auto;
+        width: 100%; /* Full width for single column layout */
+      }
+      .card {
+        max-width: 400px; /* Constrain card width */
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .card-img-top {
+        height: 220px; /* Maintain good height for single column */
+      }
+      h1 {
+        font-size: 2rem; /* Further adjust heading size */
+      }
+    }
+
+    /* Extra small devices (portrait phones, less than 576px) */
+    @media (max-width: 575.98px) {
+      .col-md-4 {
+        flex: 0 0 auto;
+        width: 100%; /* Full width */
+      }
+      .container {
+        padding: 1.5rem 1rem; /* Reduce overall padding */
+      }
+      h1 {
+        font-size: 1.8rem; /* Smallest heading size */
+        margin-bottom: 2rem !important; /* Adjust margin for smaller screens */
+      }
+      .card {
+        margin-bottom: 1.5rem; /* Adjust spacing between cards */
+      }
+      .card-img-top {
+        height: 160px; /* Smaller image height */
+      }
+      .card-title {
+        font-size: 1.1rem; /* Smaller card title */
+      }
+      .card-text {
+        font-size: 0.85rem; /* Smaller card text */
+      }
+      .btn-primary {
+        font-size: 0.95rem; /* Smaller button text */
+        padding: 0.6rem 0.8rem; /* Adjust button padding */
+      }
+      .modal-body {
+          padding: 1.5rem;
+      }
+      .modal-header {
+          padding: 1rem;
+      }
+    }
+    .navbar {
+    position:relative;
+    background-color: rgba(30, 30, 30, 0.95) !important; /* Semi-transparent dark for navbar */
+    box-shadow: 0 2px 10px var(--shadow-dark-subtle);
+    border-bottom: 1px solid var(--border-dark);
+    transition: background-color 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--color-accent-blue) !important; /* Brand name in accent blue */
+}
+
+.nav-link {
+    color: var(--color-text-light) !important;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--color-accent-blue-hover) !important; /* Blue on hover */
+}
+:root {
+    --color-accent-blue-hover: #00aaff; /* Example hover blue color */
+    /* ... other variables ... */
+}
+:root {
+    --color-accent-blue: #007bff; /* Or whatever blue color you want */
+    /* ... other variables ... */
+}
+
+/* Additional adjustment for btn-primary1 */
+.btn-primary1 {
+    background-color: var(--color-accent-blue);
+    color: var(--color-text-light);
+    padding: 0.7em 1.4em;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25);
+}
+.btn-primary1:hover {
+    background-color: var(--color-accent-blue-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container py-2">
+            <a class="navbar-brand" href="#"> <img src="images/logo.png" alt="ShowSpot Logo" height="60"> </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center me-3">
+                    <li class="nav-item px-2"><a class="nav-link" href="movieslist.html">Movies</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="concerts.html">Concerts</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="stadiumbook.html">Sports</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="comedy.html">Comedy</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="aboutpage.html">About</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="contactpage.html">Contact</a></li>
+                    <li class="nav-item px-2">
+                        <a href="login.html" class="btn btn-primary1">Login</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a href="signinpage.html" class="btn btn-primary1">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div class="container py-5">
+  <h1 class="text-center mb-5">🎮 National Level Games Shows Booking</h1>
+  <div class="row" id="show-list">
+    </div>
+</div>
+
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" id="bookingForm">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bookingModalLabel">Book Tickets</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="selectedShow" />
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Name</label>
+          <input type="text" id="name" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label for="tickets" class="form-label">Number of Tickets</label>
+          <input type="number" id="tickets" class="form-control" min="1" required />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Confirm Booking</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  const shows = [
+    { id: 'hockey-1', title: "Hockey", time: "7 PM", location: "Studio 1", image: 'images/image7.jpg' },
+    { id: 'handball-1', title: "Handball", time: "5 PM", location: "Studio 2", image: "images/image2.jpg" },
+    { id: 'volleyball-1', title: "Volleyball night live show", time: "8 PM", location: "Main Arena", image: "images/image6.jpg" },
+    { id: 'running-1', title: "Running Legends", time: "4 PM", location: "Outdoor Track", image: "images/image3.jpg" },
+    { id: 'cricket-1', title: "Cricket", time: "6 PM", location: "Quiz Zone", image: "images/image8.jpg" },
+    { id: 'basketball-1', title: "Basketball", time: "3 PM", location: "Studio 3", image: "images/image9.jpg" },
+    { id: 'tennis-1', title: "Tennis", time: "6:30 PM", location: "Puzzle Arena", image: "images/image.jpg" },
+    { id: 'kabbadi-1', title: "Kabbadi", time: "5:30 PM", location: "Speed Zone", image: "images/image5.jpg" },
+    { id: 'chess-1', title: "Chess", time: "9 PM", location: "Main Stage", image: "images/image4.jpg" }
+  ];
+
+  const showList = document.getElementById("show-list");
+
+  shows.forEach((show) => {
+    const card = document.createElement("div");
+    card.className = "col-md-4 mb-4";
+    card.innerHTML = `
+      <div class="card h-100">
+        <img src="${show.image}" class="card-img-top img-fluid" alt="${show.title}">
+        <div class="card-body">
+          <h5 class="card-title">${show.title}</h5>
+          <p class="card-text"><strong>Time:</strong> ${show.time}</p>
+          <p class="card-text"><strong>Location:</strong> ${show.location}</p>
+          <button class="btn btn-primary book-btn" 
+                  data-show-id="${show.id}" 
+                  data-show-title="${show.title}" 
+                  data-show-location="${show.location}" 
+                  data-show-time="${show.time}" 
+                  data-show-image="${show.image}">
+            Book Now
+          </button>
+        </div>
+      </div>
+    `;
+    showList.appendChild(card);
+  });
+
+  // ✅ Redirection logic
+  document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("book-btn")) {
+      const button = event.target;
+      const showId = button.dataset.showId;
+      const showTitle = button.dataset.showTitle;
+      const showLocation = button.dataset.showLocation;
+      const showTime = button.dataset.showTime;
+      const showImage = button.dataset.showImage;
+
+      const params = new URLSearchParams();
+      params.append('type', 'sports');
+      params.append('id', showId);
+      params.append('title', showTitle);
+      params.append('location', showLocation);
+      params.append('time', showTime);
+      params.append('image', showImage);
+
+      window.location.href = `seatselect.html?${params.toString()}`;
+    }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

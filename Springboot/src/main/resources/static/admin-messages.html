@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Contact Messages</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light p-4">
+  <div class="container">
+    <h2 class="mb-4">📬 Contact Messages</h2>
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Subject</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody id="messagesTableBody">
+        <!-- Rows will be added here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Fetch contact messages from backend
+    fetch('http://localhost:8080/api/contact/messages')
+      .then(response => response.json())
+      .then(data => {
+        const tableBody = document.getElementById('messagesTableBody');
+        data.forEach(msg => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${msg.fullName}</td>
+            <td>${msg.email}</td>
+            <td>${msg.subject}</td>
+            <td>${msg.message}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching messages:', error);
+      });
+  </script>
+</body>
+</html>

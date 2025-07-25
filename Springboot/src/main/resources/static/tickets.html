@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Ticket</title> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #1a1a1a; /* Dark background from the image */
+            font-family: 'Inter', sans-serif; /* Use Inter font */
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center vertically */
+            min-height: 100vh; /* Ensure full viewport height */
+            margin: 0; /* Remove default body margin */
+            padding: 20px; /* Add some padding around the ticket */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+        .ticket {
+            background-color: #2b2b2b; /* Slightly lighter dark for the ticket background */
+            width: 380px; /* Slightly wider to accommodate content better */
+            max-width: 90%; /* Responsive width */
+            border-radius: 16px; /* Slightly more rounded */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* More prominent shadow for dark background */
+            padding: 25px;
+            text-align: center;
+            position: relative; /* For the tap to hide details */
+            overflow: hidden; /* Ensure nothing overflows rounded corners */
+        }
+        .ticket-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .ticket-header img {
+            width: 70px; /* Adjust size */
+            height: 70px;
+            border-radius: 10px;
+            object-fit: cover; /* Ensure image covers the area */
+            margin-right: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .movie-info { /* Renamed to event-info conceptually */
+            text-align: left;
+            flex-grow: 1;
+        }
+        .movie-info h2 { /* Renamed to event-info h2 */
+            font-size: 24px; /* Larger event title */
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            color: #f0f0f0; /* Light color for text on dark background */
+            line-height: 1.2;
+        }
+        .movie-info small { /* Renamed to event-info small */
+            font-size: 13px; /* Slightly smaller detail font */
+            color: #b0b0b0; /* Lighter grey for small text */
+            display: block;
+            margin-bottom: 3px;
+        }
+        .movie-info .ticket-label { /* Renamed to event-info .ticket-label */
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #7c3aed; /* Keeping original purple for the label */
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 0 8px 0 8px; /* Rounded top-right, bottom-right */
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        hr {
+            border: none;
+            border-top: 1px dashed #555; /* Lighter dashed line for dark background */
+            margin: 25px 0;
+        }
+        .details-section {
+            padding: 0 10px;
+            margin-bottom: 20px;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #f0f0f0; /* Light color for text */
+        }
+        .detail-row strong {
+            font-weight: 600;
+            color: #e0e0e0; /* Slightly darker light color */
+        }
+        .detail-row span {
+            color: #d0d0d0; /* Lighter color for spans */
+            font-weight: 500;
+        }
+        .tap-details {
+            font-size: 13px;
+            color: #7c3aed; /* Keeping original purple for the link */
+            cursor: pointer;
+            margin-top: -10px; /* Pull it up closer to the details */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .tap-details i {
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+        .tap-details.expanded i {
+            transform: rotate(180deg);
+        }
+        .hidden-details {
+            display: none;
+            transition: max-height 0.5s ease-out; /* Smooth transition for showing/hiding */
+            max-height: 0; /* Start hidden */
+            overflow: hidden;
+        }
+        .hidden-details.show {
+            display: block; /* Make block to allow max-height transition */
+            max-height: 200px; /* Enough height to show content */
+        }
+
+        .qr {
+            margin: 25px 0;
+        }
+        .qr img {
+            width: 150px; /* Larger QR code */
+            height: 150px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            filter: invert(1); /* Invert QR code colors for better contrast on dark background */
+        }
+        .booking-id {
+            margin-top: 20px;
+            font-size: 15px;
+            color: #b0b0b0; /* Lighter grey for booking ID text */
+        }
+        .booking-id strong {
+            font-weight: 600;
+        }
+        .booking-id .id-number {
+            font-size: 24px; /* Larger booking ID */
+            font-weight: 700;
+            color: #7c3aed; /* Keeping original purple for booking ID number */
+            letter-spacing: 1px;
+            margin-top: 5px;
+            display: block;
+        }
+        .note {
+            font-size: 12px;
+            color: #888; /* Slightly lighter grey for notes */
+            margin-top: 25px;
+            line-height: 1.5;
+        }
+        .ticket-actions {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444; /* Darker separator for actions */
+            margin-bottom: 20px; /* Add margin below actions */
+        }
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #b0b0b0; /* Lighter grey for action item text */
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .action-item:hover {
+            color: #7c3aed;
+        }
+        .action-item i {
+            font-size: 22px;
+            margin-bottom: 8px;
+            color: #888; /* Lighter grey for action item icons */
+            transition: color 0.2s ease;
+        }
+        .action-item:hover i {
+            color: #7c3aed;
+        }
+
+        /* New styles for Total Amount section */
+        .total-amount-section {
+            padding: 20px 10px;
+            border-top: 1px solid #444; /* Darker separator for the section */
+            margin-top: 20px;
+            text-align: left;
+        }
+        .total-amount-section h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f0f0f0; /* Light color for heading */
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .amount-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #d0d0d0; /* Lighter color for amounts */
+        }
+        .amount-row.total-paid {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f0f0f0; /* Light color for total paid text */
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px dashed #555; /* Lighter dashed line */
+        }
+        .amount-row.total-paid span {
+            color: #7c3aed; /* Keeping original purple for total paid amount */
+        }
+        .back-home-button {
+            background-color: #7c3aed; /* Purple background */
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: none;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+        .back-home-button:hover {
+            background-color: #6a32d1; /* Darker purple on hover */
+            transform: translateY(-2px);
+        }
+        .back-home-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(124, 58, 237, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket">
+        <div class="ticket-header">
+            <img id="ticketImage" src="https://placehold.co/70x70/E0E0E0/333333?text=Event" alt="Event Poster">
+            <div class="movie-info">
+                <span class="ticket-label">E.Ticket</span>
+                <h2 id="movieName">Event Name</h2>
+                <small id="movieVenue">Venue</small>
+                <small id="movieTime">Time</small>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="details-section">
+            <div class="detail-row">
+                <strong>Date</strong>
+                <span id="ticketDate">DD/MM/YYYY</span>
+            </div>
+            <div class="detail-row">
+                <strong>Seats</strong>
+                <span id="seatNumber">A1, A2</span>
+            </div>
+            <div class="detail-row">
+                <strong>Tickets</strong>
+                <span id="ticketCount">2</span>
+            </div>
+        </div>
+
+        <div class="tap-details" id="tapDetailsToggle">
+            Tap to hide details <i class="fas fa-chevron-up"></i>
+        </div>
+
+        <div class="hidden-details show">
+            <div class="details-section">
+                <div class="detail-row">
+                    <strong>Booking ID</strong>
+                    <span id="bookingId">#XYZ123ABC</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Payment Method</strong>
+                    <span id="paymentMethod">UPI</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="qr">
+            <img id="qrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ExampleQRData" alt="QR Code" />
+        </div>
+
+        <div class="booking-id">
+            Your Booking ID
+            <span class="id-number" id="finalBookingId">#XYZ123ABC</span>
+        </div>
+
+        <div class="total-amount-section">
+            <h3>Payment Summary</h3>
+            <div class="amount-row">
+                <span>Total Paid</span>
+                <span id="totalPaid">₹0.00</span>
+            </div>
+        </div>
+
+        <p class="note">
+            Please present this ticket at the entry gate.
+        </p>
+
+        <div class="ticket-actions">
+            <div class="action-item">
+                <i class="fas fa-download"></i> Download
+            </div>
+            <div class="action-item">
+                <i class="fas fa-share-alt"></i> Share
+            </div>
+            <div class="action-item">
+                <i class="fas fa-calendar-alt"></i> Add to Calendar
+            </div>
+        </div>
+
+        <button class="back-home-button">Back to Home</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tapDetailsToggle = document.getElementById("tapDetailsToggle");
+            const hiddenDetails = document.querySelector(".hidden-details");
+            const toggleIcon = tapDetailsToggle.querySelector('i');
+
+            // Initial state: hidden details are shown, toggle says "Tap to hide details"
+            hiddenDetails.classList.add("show");
+            toggleIcon.classList.remove("fa-chevron-down");
+            toggleIcon.classList.add("fa-chevron-up");
+            tapDetailsToggle.childNodes[0].nodeValue = "Tap to hide details "; // Update text
+
+            tapDetailsToggle.addEventListener("click", function() {
+                if (hiddenDetails.classList.contains("show")) {
+                    // Currently visible, hide it
+                    hiddenDetails.classList.remove("show");
+                    toggleIcon.classList.remove("fa-chevron-up");
+                    toggleIcon.classList.add("fa-chevron-down");
+                    tapDetailsToggle.childNodes[0].nodeValue = "Tap to show details "; // Update text
+                } else {
+                    // Currently hidden, show it
+                    hiddenDetails.classList.add("show");
+                    toggleIcon.classList.remove("fa-chevron-down");
+                    toggleIcon.classList.add("fa-chevron-up");
+                    tapDetailsToggle.childNodes[0].nodeValue = "Tap to hide details "; // Update text
+                }
+            });
+
+            // "Back to Home" button functionality
+            document.querySelector('.back-home-button').addEventListener('click', () => {
+                window.location.href = 'landingpage.html'; // Redirect to your home page (create this file)
+            });
+
+            // --- Dynamic Content Population ---
+            const urlParams = new URLSearchParams(window.location.search);
+
+            const eventId = urlParams.get('eventId');
+            const eventTitle = urlParams.get('eventTitle');
+            const venue = urlParams.get('venue');
+            const date = urlParams.get('date');
+            const time = urlParams.get('time');
+            const seats = urlParams.get('seats');
+            const totalAmount = urlParams.get('totalAmount');
+            const paymentMethod = urlParams.get('paymentMethod');
+            const eventImage = urlParams.get('image'); // Get image from params
+
+            // Update Header Info
+            document.getElementById('movieName').textContent = eventTitle || 'Event Name';
+            document.getElementById('movieVenue').textContent = venue || 'Venue';
+            document.getElementById('movieTime').textContent = time || 'Time';
+
+            // Update Ticket Details
+            document.getElementById('ticketDate').textContent = date || 'DD/MM/YYYY';
+            document.getElementById('seatNumber').textContent = seats || 'N/A';
+            document.getElementById('ticketCount').textContent = seats ? seats.split(',').length : '0'; // Calculate ticket count from seats
+
+            // Update Hidden Details
+            // Generate a simple booking ID (for demonstration purposes, in a real app this would come from a backend)
+            const generatedBookingId = '#BK' + Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');
+            document.getElementById('bookingId').textContent = generatedBookingId;
+            document.getElementById('finalBookingId').textContent = generatedBookingId;
+            document.getElementById('paymentMethod').textContent = paymentMethod ? paymentMethod.toUpperCase() : 'N/A';
+
+
+            // Update Total Paid
+            document.getElementById('totalPaid').textContent = totalAmount ? `₹${parseFloat(totalAmount).toFixed(2)}` : '₹0.00';
+
+            // Update Image
+            if (eventImage) {
+                document.getElementById('ticketImage').src = eventImage;
+            } else {
+                document.getElementById('ticketImage').src = "https://placehold.co/70x70/E0E0E0/333333?text=Event"; // Placeholder if no image
+            }
+
+            // Update QR Code with relevant data
+            const qrData = `Event: ${eventTitle}, Venue: ${venue}, Date: ${date}, Time: ${time}, Seats: ${seats}, Amount: ${totalAmount}, BookingID: ${generatedBookingId}`;
+            document.getElementById('qrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}`;
+        });
+    </script>
+</body>
+</html>

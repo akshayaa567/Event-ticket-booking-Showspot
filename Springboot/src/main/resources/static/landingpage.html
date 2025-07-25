@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShowSpot - Dark Theme</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+    :root {
+        /* Primary Colors (Dark Theme) */
+        --color-dark-surface: #1E1E1E; /* Dark gray for backgrounds and main surfaces */
+        --color-dark-elevation-1: #2B2B2B; /* Slightly lighter dark gray for elevated elements like cards */
+        --color-dark-elevation-2: #3A3A3A; /* Even lighter for higher elevation */
+        --color-text-light: #E0E0E0; /* Off-white for primary text */
+        --color-text-muted: #A0A0A0; /* Lighter gray for secondary/muted text */
+        --color-text-very-muted: #606060; /* For less important text */
+
+        /* Accent Color (Blue) */
+        --color-accent-blue: #007BFF; /* A vibrant, but not overly saturated, blue */
+        --color-accent-blue-hover: #409FFF; /* Lighter blue for hover effects */
+        --color-accent-blue-active: #0056B3; /* Darker blue for active/pressed states */
+
+        /* Category Icon Colors (Non-blue) */
+        --color-icon-film: #FFD700; /* Gold for movies */
+        --color-icon-music: #FF69B4; /* Hot pink for music */
+        --color-icon-sports: #32CD32; /* Lime green for sports */
+        --color-icon-comedy: #8A2BE2; /* Blue-violet for comedy */
+
+        /* Borders & Shadows */
+        --border-dark: #3A3A3A; /* Darker border for definition on dark backgrounds */
+        --shadow-dark-subtle: rgba(0, 0, 0, 0.4); /* More visible on dark backgrounds */
+        --shadow-dark-hover: rgba(0, 0, 0, 0.6);
+
+        /* Hero Section Specific */
+        --bg-hero: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.8) 100%),
+                   url('https://assets.nflxext.com/ffe/siteui/vlv3/9d3533b2-0e2b-40b2-95e0-ecd7979cc88b/a3873901-5b7c-46eb-b9fa-12fea5197bd3/IN-en-20240311-popsignuptwoweeks-perspective_alpha_website_large.jpg') no-repeat center center/cover;
+    }
+
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background-color: var(--color-dark-surface); /* Main dark background */
+        color: var(--color-text-light); /* Default light text on dark background */
+        margin-top: 80px;
+        line-height: 1.6;
+    }
+
+    /* General containers/sections */
+    section {
+        background-color: var(--color-dark-surface); /* Default for sections */
+        padding: 60px 0;
+    }
+
+    .py-5 { padding-top: 4rem !important; padding-bottom: 4rem !important; }
+    .py-4 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+    .py-3 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+    .px-4 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+
+    .navbar {
+        background-color: rgba(30, 30, 30, 0.95) !important; /* Semi-transparent dark for navbar */
+        box-shadow: 0 2px 10px var(--shadow-dark-subtle);
+        border-bottom: 1px solid var(--border-dark);
+        transition: background-color 0.3s ease;
+    }
+
+    .navbar-brand {
+        font-weight: 700;
+        font-size: 24px;
+        color: var(--color-accent-blue) !important; /* Brand name in accent blue */
+    }
+
+    .nav-link {
+        color: var(--color-text-light) !important;
+        font-weight: 600;
+        transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+        color: var(--color-accent-blue-hover) !important; /* Blue on hover */
+    }
+
+    .search-bar input,
+    .search-bar select {
+        border-radius: 8px;
+        padding: 12px;
+        margin: 10px;
+        width: 250px;
+        max-width:100%;
+        background-color: var(--color-dark-elevation-1); /* Slightly lighter dark for inputs */
+        border: 1px solid var(--border-dark);
+        color: var(--color-text-light);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .search-bar input:focus,
+    .search-bar select:focus {
+        border-color: var(--color-accent-blue);
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.4); /* Blue focus ring */
+        background-color: var(--color-dark-elevation-2); /* Even lighter on focus */
+        outline: none;
+    }
+
+    .search-bar {
+        display:flex;
+        justify-content:center;
+        flex-wrap:wrap;
+        margin-top:30px;
+        padding: 20px 0;
+        background-color: var(--color-dark-elevation-1); /* Distinct background for search section */
+        border-bottom: 1px solid var(--border-dark);
+    }
+
+    .category-card {
+        border:1px solid var(--border-dark);
+        border-radius:12px;
+        padding:25px;
+        text-align:center;
+        background-color: var(--color-dark-elevation-1); /* Card background */
+        transition:0.3s ease;
+        height:100%;
+        color: var(--color-text-light);
+        box-shadow: 0 4px 15px var(--shadow-dark-subtle);
+    }
+
+    .category-card:hover {
+        box-shadow:0 6px 20px var(--shadow-dark-hover);
+        transform: translateY(-5px);
+        border-color: var(--color-accent-blue); /* Blue border on hover */
+        background-color: var(--color-dark-elevation-2); /* Lighter on hover */
+    }
+
+    .category-icon {
+        font-size:40px;
+        margin-bottom:10px;
+        /* Category icons now retain their specific colors */
+    }
+    .category-icon.bi-film { color: var(--color-icon-film); }
+    .category-icon.bi-music-note-beamed { color: var(--color-icon-music); }
+    .category-icon.bi-trophy-fill { color: var(--color-icon-sports); }
+    .category-icon.bi-mic-fill { color: var(--color-icon-comedy); }
+
+
+    .event-card {
+        border: 1px solid var(--border-dark);
+        border-radius: 12px;
+        overflow:hidden;
+        background-color: var(--color-dark-elevation-1); /* Card background */
+        height:100%;
+        color: var(--color-text-light);
+        box-shadow: 0 4px 15px var(--shadow-dark-subtle);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px var(--shadow-dark-hover);
+        background-color: var(--color-dark-elevation-2); /* Lighter on hover */
+    }
+
+    .event-card img {
+        width:100%;
+        height:200px;
+        object-fit:cover;
+    }
+
+    .badge-top {
+        position:absolute;
+        top:10px;
+        left:10px;
+        background: var(--color-accent-blue) !important;
+        color: var(--color-text-light) !important;
+        padding: .4em .8em;
+        border-radius: .25rem;
+        font-size: .85em;
+    }
+
+    .rating-badge {
+        position:absolute;
+        top:10px;
+        right:10px;
+        background: rgba(0, 0, 0, 0.7) !important; /* Darker for better contrast on images */
+        color: var(--color-text-light) !important;
+        padding: .4em .8em;
+        border-radius: .25rem;
+        font-size: .85em;
+    }
+
+    .movies-container {
+        overflow-x:auto;
+        white-space:nowrap;
+        padding-bottom:20px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .mm, .mmm {
+        display:inline-block;
+        flex:none;
+        width:250px;
+        margin-right:15px;
+        text-align:center;
+        cursor:pointer;
+        transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+        background-color: var(--color-dark-elevation-1); /* Card background */
+        border-radius: 12px;
+        box-shadow: 0 4px 10px var(--shadow-dark-subtle);
+        padding: 10px;
+        border: 1px solid var(--border-dark);
+        color: var(--color-text-light);
+    }
+
+    .mm img, .mmm img {
+        width:250px;
+        height:350px;
+        object-fit:cover;
+        border-radius:8px;
+        margin-bottom: 10px;
+    }
+
+    .mm:hover, .mmm:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 8px 20px var(--shadow-dark-hover);
+        background-color: var(--color-dark-elevation-2); /* Lighter on hover */
+    }
+
+    .section-heading {
+        background-color: var(--color-dark-elevation-1); /* Darker heading background */
+        color: var(--color-text-light);
+        padding: 18px 25px;
+        font-size: 26px;
+        font-weight: 700;
+        margin-top: 40px;
+        margin-bottom: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px var(--shadow-dark-subtle);
+        text-align: center;
+        border-left: 6px solid var(--color-accent-blue); /* Accent blue border */
+    }
+
+    .marquee-wrapper {
+        overflow: hidden;
+        background-color: var(--color-dark-elevation-1); /* Marquee background */
+        padding: 20px 0;
+        border-top: 1px solid var(--border-dark);
+        border-bottom: 1px solid var(--border-dark);
+    }
+
+    .marquee {
+        display: flex;
+        animation: marquee 25s linear infinite;
+        width: max-content;
+    }
+
+    .marquee img {
+        height:120px;
+        margin-right:20px;
+        border-radius:8px;
+        box-shadow: 0 4px 8px var(--shadow-dark-subtle);
+        border: 1px solid var(--border-dark);
+    }
+
+    @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    footer {
+        background-color: #000000; /* Slightly deeper black for footer */
+        color: var(--color-text-light);
+        text-align:center;
+        padding:40px 0;
+        margin-top:50px;
+    }
+
+    footer p {
+        margin-bottom: 8px;
+    }
+
+    .social-icons a {
+        margin: 0 10px;
+        color: var(--color-text-light);
+        font-size: 24px;
+        text-decoration:none;
+        transition: color 0.3s ease;
+    }
+
+    .social-icons a:hover {
+        color: var(--color-accent-blue-hover); /* Blue on hover */
+    }
+
+    /* swiper button css */
+    .nav-btn {
+        height: 44px;
+        width: 44px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.15); /* Slightly transparent light for buttons */
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 2px 8px var(--shadow-dark-subtle);
+        transition: 0.2s ease;
+        color: var(--color-text-light); /* Light icons */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        z-index: 10;
+        cursor: pointer;
+    }
+
+    .nav-btn:hover {
+        background-color: var(--color-accent-blue); /* Blue on hover */
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+        color: var(--color-text-light); /* Text light on blue hover */
+    }
+
+    .nav-btn::after,
+    .nav-btn::before {
+        font-size: 22px;
+        color: inherit;
+    }
+
+    .swiper-pagination-bullet {
+        background-color: var(--color-text-muted);
+        opacity: 0.7;
+    }
+
+    .swiper-pagination-bullet-active {
+        background-color: var(--color-accent-blue);
+        opacity: 1;
+    }
+
+    .banner-section {
+        background-color: var(--color-dark-elevation-1);
+        padding: 40px 0;
+        text-align: center;
+    }
+
+    .promo-banner {
+        width: 100%;
+        max-width: 480px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 20px var(--shadow-dark-subtle);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+    .promo-banner:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 30px var(--shadow-dark-hover);
+    }
+
+    .promo-banner img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        position: relative;
+        height: 100vh;
+        background: var(--bg-hero);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 20px;
+        margin-top: -80px;
+        color: var(--color-text-light);
+        text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6); /* Stronger shadow for text on dark hero */
+    }
+
+    .hero-content {
+        max-width: 900px;
+        z-index: 2;
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .hero-title {
+        font-size: 4.2rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 2rem;
+        font-weight: 500;
+        margin-bottom: 3rem;
+    }
+
+    /* Buttons */
+    .cta-buttons {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 0.9rem 2rem;
+        font-size: 1.4rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 200px;
+    }
+
+    .btn-primary {
+        background-color: var(--color-accent-blue);
+        color: var(--color-text-light);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--color-accent-blue-hover);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 123, 255, 0.45);
+    }
+
+    .btn-secondary {
+        background-color: rgba(255, 255, 255, 0.1); /* Very subtle transparency */
+        color: var(--color-text-light);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(4px);
+    }
+
+    .btn-secondary:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Form Control */
+    .form-control {
+        background-color: var(--color-dark-elevation-1);
+        border: 1px solid var(--border-dark);
+        color: var(--color-text-light);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-control::placeholder {
+        color: var(--color-text-muted);
+    }
+
+    .form-control:focus {
+        border-color: var(--color-accent-blue);
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.4);
+    }
+
+    /* Testimonial Section */
+    .testimonial-section {
+        background-color: var(--color-dark-elevation-1);
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
+    .swiper-slide {
+        background-color: var(--color-dark-elevation-2); /* Slightly lighter for slide background */
+        border-radius: 12px;
+        padding: 2.5rem !important;
+        border: 1px solid var(--border-dark);
+        box-shadow: 0 6px 18px var(--shadow-dark-subtle);
+        text-align: center;
+        color: var(--color-text-light);
+        transition: box-shadow 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .swiper-slide:hover {
+        box-shadow: 0 8px 25px var(--shadow-dark-hover);
+        transform: translateY(-3px);
+        background-color: var(--color-dark-elevation-1); /* Slightly darker on hover (subtle change) */
+    }
+
+    /* Responsive Adjustments */
+    @media screen and (max-width: 768px) {
+        .hero-title {
+            font-size: 3rem;
+        }
+        .hero-subtitle {
+            font-size: 1.5rem;
+        }
+        .btn {
+            min-width: unset;
+            width: 100%;
+        }
+        .nav-btn {
+            display: none;
+        }
+        .section-heading {
+            font-size: 22px;
+            padding: 15px 20px;
+        }
+        .mm, .mmm {
+            width: 200px;
+        }
+        .mm img, .mmm img {
+            width: 200px;
+            height: 300px;
+        }
+        .marquee img {
+            height: 100px;
+            margin-right: 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 2.2rem;
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+        .cta-buttons {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .btn {
+            padding: 0.7rem 1.5rem;
+            font-size: 1.2rem;
+            max-width: 280px;
+        }
+        .search-bar input, .search-bar select {
+            width: 90%;
+            margin: 8px 0;
+        }
+        .category-card, .event-card, .mm, .mmm {
+            margin-bottom: 20px;
+        }
+        .section-heading {
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+    }
+
+    /* Additional adjustment for btn-primary1 */
+    .btn-primary1 {
+        background-color: var(--color-accent-blue);
+        color: var(--color-text-light);
+        padding: 0.7em 1.4em;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 80px;
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25);
+    }
+    .btn-primary1:hover {
+        background-color: var(--color-accent-blue-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    }
+
+    /* Text colors for better contrast on dark */
+    p.text-muted {
+        color: var(--color-text-muted) !important;
+    }
+    h6 {
+        color: var(--color-text-light);
+    }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container py-2">
+           <a class="navbar-brand" href="#"> <img src="images/logo.png" alt="ShowSpot Logo" height="60"> </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center me-3">
+                    <li class="nav-item px-2"><a class="nav-link" href="movieslist.html">Movies</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="concerts.html">Concerts</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="stadiumbook.html">Sports</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="comedy.html">Comedy</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="aboutpage.html">About</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="contactpage.html">Contact</a></li>
+                   <!-- Login and Sign Up Buttons (visible only when not logged in) -->
+<li class="nav-item px-2" id="loginBtn">
+    <a href="login.html" class="btn btn-primary1">Login</a>
+</li>
+<li class="nav-item px-2" id="signupBtn">
+    <a href="signinpage.html" class="btn btn-primary1">Sign Up</a>
+</li>
+
+<!-- Profile Dropdown (initials + email + logout), shown only when logged in -->
+<li class="nav-item dropdown px-2 d-none" id="profileDropdown">
+    <a class="btn btn-primary1 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span id="userInitials">U</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li><span class="dropdown-item" id="userEmail">Loading...</span></li>
+        <li><a class="dropdown-item" href="#">Settings</a></li>
+        <li><a class="dropdown-item text-danger" href="#" onclick="logout()">Logout</a></li>
+    </ul>
+</li>
+                   
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+   <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Unlimited Movie,Live Concerts and more....</h1>
+            <p class="hero-subtitle">Book from anywhere. Cancel anytime.</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary">Get Started</button>
+                <button class="btn btn-secondary">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+   <section class="py-5" style="background-color: var(--color-dark-elevation-1);">
+    <div class="container text-center">
+        <h2 class="text-center fw-bold mb-5" style="color: var(--color-text-light);">How ShowSpot Works</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="category-card p-4">
+                    <div class="category-icon mb-3">
+                        <i class="bi bi-search" style="color: var(--color-accent-blue);"></i>
+                    </div>
+                    <h5 class="fw-bold" style="color: var(--color-text-light);">1. Discover Events</h5>
+                    <p class="text-muted small">Browse through a wide range of movies, concerts, sports, and comedy shows happening near you.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="category-card p-4">
+                    <div class="category-icon mb-3">
+                        <i class="bi bi-ticket-fill" style="color: var(--color-icon-film);"></i>
+                    </div>
+                    <h5 class="fw-bold" style="color: var(--color-text-light);">2. Select & Book</h5>
+                    <p class="text-muted small">Choose your preferred seats, date, and time, then proceed with our secure and easy booking process.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="category-card p-4">
+                    <div class="category-icon mb-3">
+                        <i class="bi bi-emoji-sunglasses-fill" style="color: var(--color-icon-comedy);"></i>
+                    </div>
+                    <h5 class="fw-bold" style="color: var(--color-text-light);">3. Enjoy the Show!</h5>
+                    <p class="text-muted small">Receive instant e-tickets and get ready to experience live entertainment at its best.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section class="py-5">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5" style="color: var(--color-text-light);">Explore Categories</h2>
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3">
+                <a href="movieslist.html" class="text-decoration-none"> <div class="category-card">
+                        <div class="category-icon bi bi-film"></div> <h6>Movies</h6>
+                        <p class="text-muted small">Latest releases</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="concerts.html" class="text-decoration-none"> <div class="category-card">
+                        <div class="category-icon bi bi-music-note-beamed"></div> <h6>Concerts</h6>
+                        <p class="text-muted small">Live performances</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="stadiumbook.html" class="text-decoration-none"> <div class="category-card">
+                        <div class="category-icon bi bi-trophy-fill"></div> <h6>Sports</h6>
+                        <p class="text-muted small">Cricket, Football</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="comedy.html" class="text-decoration-none"> <div class="category-card">
+                        <div class="category-icon bi bi-mic-fill"></div> <h6>Comedy</h6>
+                        <p class="text-muted small">Stand-up & Humor</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section class="py-4" style="background-color: var(--color-dark-elevation-1);">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-4" style="color: var(--color-text-light);">Featured Events in Mumbai</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="position-relative event-card">
+                        <span class="badge badge-top">Movies</span>
+                        <span class="badge rating-badge"><i class="bi bi-star-fill text-warning"></i>4.8</span>
+                        <img src="images/war2.jpg" alt="War 2 movie poster">
+                        <div class="p-3">
+                            <h5>War 2</h5>
+                            <p class="text-muted"><i class="bi bi-calendar"></i> 25/8/2025 • <i class="bi bi-clock"></i> 7:00 PM</p>
+                            <p class="text-muted"><i class="bi bi-geo-alt"></i> PVR Cinemas</p>
+                            <p class="fw-semibold" style="color: var(--color-text-light);">From ₹150</p>
+                            <a class="btn btn-primary" href="movieslist.html">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="position-relative event-card">
+                        <span class="badge badge-top">Concerts</span>
+                        <span class="badge rating-badge"><i class="bi bi-star-fill text-warning"></i>4.9</span>
+                        <img src="images/arjithsingh.jpg" alt="Arijit Singh concert">
+                        <div class="p-3">
+                            <h5>Arijit Singh Live</h5>
+                            <p class="text-muted"><i class="bi bi-calendar"></i> 20/6/2024 • <i class="bi bi-clock"></i> 8:00 PM</p>
+                            <p class="text-muted"><i class="bi bi-geo-alt"></i> NSCI Stadium</p>
+                            <p class="fw-semibold" style="color: var(--color-text-light);">From ₹2000</p>
+                            <a class="btn btn-primary" href="concerts.html">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="position-relative event-card">
+                        <span class="badge badge-top">Sports</span>
+                        <span class="badge rating-badge"><i class="bi bi-star-fill text-warning"></i>4.7</span>
+                        <img src="images/match.jpg" alt="Cricket Match">
+                        <div class="p-3">
+                            <h5>India vs Australia</h5>
+                            <p class="text-muted"><i class="bi bi-calendar"></i> 25/6/2024 • <i class="bi bi-clock"></i> 2:30 PM</p>
+                            <p class="text-muted"><i class="bi bi-geo-alt"></i> Wankhede Stadium</p>
+                            <p class="fw-semibold" style="color: var(--color-text-light);">From ₹500</p>
+                            <a class="btn btn-primary" href="stadiumbook.html">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-3 marquee-wrapper">
+        <div class="marquee">
+            <img src="images/pilla.jpg" alt="Banner 1" />
+            <img src="images/S_O.jpg" alt="Banner 2" />
+            <img src="images/Orange.jpg" alt="Banner 3" />
+            <img src="images/Oka Laila Kosam.jpg" alt="Banner 4" />
+            <img src="images/Dhurva.jpg" alt="Banner 5" />
+            <img src="images/pilla.jpg"alt="Banner 6" />
+            <img src="images/rudramadevi.jpg" alt="Banner 7" />
+            <img src="images/Mass look from temper.jpg" alt="Banner 8" />
+            <img src="images/fida.jpg" alt="Banner 9" />
+            <img src="images/Arya 2.jpg" alt="Banner 10" />
+            <img src="images/Oy!.jpg" alt="Banner 11" />
+            <img src="images/endukuanthepremaantha.jpg" alt="Banner 11" />
+        </div>
+   </section>
+
+    <section class="px-4">
+        <h2 class="section-heading">Upcoming Re-Releases</h2>
+        <div class="movies-container">
+            <div class="mm"><img src="images/Andala Rakshasi.jpg" alt="Andala Rakshasi movie poster"><p>Andala Rakshasi</p></div>
+            <div class="mm"><img src="images/Yamadonga.jpg" alt="Yamadonga movie poster"><p>Yamadonga </p></div>
+            <div class="mm"><img src="images/Khaleja.jpg" alt="Khaleja movie poster"><p>Khaleja</p></div>
+            <div class="mm"><img src="images/darling.jpg" alt="Darling movie poster"><p>Darling</p></div>
+            <div class="mm"><img src="images/mayabazar.jpg" alt="Mayabazar movie poster"><p>Mayabazar</p></div>
+        </div>
+    </section>
+
+    <section class="px-4" style="background-color: var(--color-dark-elevation-1);">
+        <h2 class="section-heading">Live Performances</h2>
+        <div class="movies-container">
+            <div class="mm"><img src="images/drama.jpg" alt="Night Drama performance"><p>Night Drama</p></div>
+            <div class="mm"><img src="images/standup.jpg" alt="Standup Comedy show"><p>Standup Comedy</p></div>
+            <div class="mm"><img src="images/folkdance.jpg" alt="Folk Dance performance"><p>FolkDance</p></div>
+            <div class="mm"><img src="images/musicconcert.jpg" alt="Music Concert"><p>Music Concert</p></div>
+            <div class="mm"><img src="images/mayabazar.jpg" alt="Mayabazar performance"><p>Mayabazar Drama</p></div>
+        </div>
+    </section>
+
+  <section class="testimonial-section py-5">
+  <h2 class="text-center fw-bold mb-5" style="color: var(--color-text-light);">What Our Customers Say</h2>
+  <div class="container">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide text-center p-3">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d877341ace?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzgyNDl8MHwxfHNlYXJjaHwxNXx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8fHwxNzE4Mzg0OTg5fDA&ixlib=rb-4.0.3&q=80&w=100" alt="Marnie Lotter" class="rounded-circle mb-3" style="width:80px; height:80px; object-fit:cover;">
+          <p class="mb-2" style="color: var(--color-text-light);">"ShowSpot made booking tickets incredibly easy! Clean UI and quick access to all events."</p>
+          <h6 class="mb-0" style="color: var(--color-text-light);">Marnie Lotter</h6>
+          <small class="text-muted">Regular User</small>
+        </div>
+        <div class="swiper-slide text-center p-3">
+          <img src="https://images.unsplash.com/photo-1544005313-94ef699e1e05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzgyNDl8MHwxfHNlYXJjaHw3fHxwcm9maWxlJTIwcGljdHVyZXxlbnwwfHx8fDE3MTgzODQ5Nzd8MA&ixlib=rb-4.0.3&q=80&w=100" alt="John Doe" class="rounded-circle mb-3" style="width:80px; height:80px; object-fit:cover;">
+          <p class="mb-2" style="color: var(--color-text-light);">"Great experience with concerts and sports events. The booking process is incredibly smooth and reliable!"</p>
+          <h6 class="mb-0" style="color: var(--color-text-light);">John Doe</h6>
+          <small class="text-muted">Concert Enthusiast</small>
+        </div>
+        <div class="swiper-slide text-center p-3">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzgyNDl8MHwxfHNlYXJjaHwyMHx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8fHwxNzE4Mzg0OTg5fDA&ixlib=rb-4.0.3&q=80&w=100" alt="Jane Smith" class="rounded-circle mb-3" style="width:80px; height:80px; object-fit:cover;">
+          <p class="mb-2" style="color: var(--color-text-light);">"Finding movie tickets was never this simple and quick. I’ll definitely be using ShowSpot again!"</p>
+          <h6 class="mb-0" style="color: var(--color-text-light);">Jane Smith</h6>
+          <small class="text-muted">Movie Lover</small>
+        </div>
+        <div class="swiper-slide text-center p-3">
+            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzgyNDl8MHwxfHNlYXJjaHwxMHx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8fHwxNzE4Mzg0OTc3fDA&ixlib=rb-4.0.3&q=80&w=100" alt="Alice Johnson" class="rounded-circle mb-3" style="width:80px; height:80px; object-fit:cover;">
+            <p class="mb-2" style="color: var(--color-text-light);">"The best platform for discovering local events. Highly recommend for any entertainment needs!"</p>
+            <h6 class="mb-0" style="color: var(--color-text-light);">Alice Johnson</h6>
+            <small class="text-muted">Event Discoverer</small>
+        </div>
+        <div class="swiper-slide text-center p-3">
+            <img src="https://images.unsplash.com/photo-1599566150163-29194d693247?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzgyNDl8MHwxfHNlYXJjaHw0fHxwcm9maWxlJTIwcGljdHVyZXxlbnwwfHx8fDE3MTgzODQ5Nzd8MA&ixlib=rb-4.0.3&q=80&w=100" alt="Michael Brown" class="rounded-circle mb-3" style="width:80px; height:80px; object-fit:cover;">
+            <p class="mb-2" style="color: var(--color-text-light);">"User-friendly interface and a wide selection of shows. A must-have for entertainment lovers."</p>
+            <h6 class="mb-0" style="color: var(--color-text-light);">Michael Brown</h6>
+            <small class="text-muted">Entertainment Seeker</small>
+        </div>
+      </div>
+      <div class="swiper-button-next nav-btn"></div>
+      <div class="swiper-button-prev nav-btn"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+
+    <footer class="py-5">
+        <p>&copy; 2025 ShowSpot. All rights reserved.</p>
+        <p class="mb-3">Contact: support@showspot.com | Follow us:</p>
+        <div class="social-icons mb-4">
+            <a href="https://www.facebook.com" target="_blank" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.twitter.com" target="_blank" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+            <a href="https://www.instagram.com" target="_blank" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.linkedin.com" target="_blank" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+        </div>
+        <p class="small"><a href="#" class="text-light text-decoration-none">Mailing List</a> | <a href="#" class="text-light text-decoration-none">Terms of Service</a> | <a href="#" class="text-light text-decoration-none">Privacy Policy</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            grabCursor: true,
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                576: {
+                    slidesPerView: 1,
+                },
+                768: {
+                    slidesPerView: 2,
+                },
+                992: {
+                    slidesPerView: 3,
+                }
+            }
+        });
+    document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input');
+    const citySelect = document.getElementById('city-select');
+    const categorySelect = document.getElementById('category-select');
+    const searchButton = document.getElementById('search-button');
+    const resultsDisplay = document.getElementById('results-display');
+
+    searchButton.addEventListener('click', () => {
+        const searchTerm = searchInput.value.trim();
+        const selectedCity = citySelect.value;
+        const selectedCategory = categorySelect.value;
+
+        // In a real application, you would send this data to your backend server
+        // via an AJAX call (e.g., using fetch API or XMLHttpRequest).
+        // The backend would then query your database and return results.
+
+        let message = `Searching for: "${searchTerm}"`;
+
+        if (selectedCity) {
+            message += `, in City: ${selectedCity}`;
+        }
+        if (selectedCategory) {
+            message += `, Category: ${selectedCategory}`;
+        }
+
+        message += `. (This is where your actual search results would appear!)`;
+
+        // For demonstration, display the collected data
+        resultsDisplay.textContent = message;
+        resultsDisplay.style.display = 'block';
+
+        // Example of how you might construct a URL for a simple client-side redirection
+        // In a real app, this would be a backend API call
+        let redirectUrl = 'search-results.html?';
+        const params = [];
+        if (searchTerm) {
+            params.push(`q=${encodeURIComponent(searchTerm)}`);
+        }
+        if (selectedCity) {
+            params.push(`city=${encodeURIComponent(selectedCity)}`);
+        }
+        if (selectedCategory) {
+            params.push(`category=${encodeURIComponent(selectedCategory)}`);
+        }
+
+        redirectUrl += params.join('&');
+
+        // You would typically not redirect directly like this if using a dynamic SPA,
+        // but it shows the concept of passing parameters.
+        // window.location.href = redirectUrl; // Uncomment to see redirection
+    });
+});
+    </script>
+   <script>
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const loginBtn = document.getElementById("loginBtn");
+  const signupBtn = document.getElementById("signupBtn");
+  const profileDropdown = document.getElementById("profileDropdown");
+
+  if (user) {
+    // Hide login/signup, show profile
+    loginBtn.classList.add("d-none");
+    signupBtn.classList.add("d-none");
+    profileDropdown.classList.remove("d-none");
+
+    // ✅ Set initials from firstName + lastName
+    const first = user.firstName || "";
+    const last = user.lastName || "";
+    const initials = `${first[0] || ""}${last[0] || ""}`.toUpperCase();
+
+    document.getElementById("userInitials").textContent = initials;
+    document.getElementById("userEmail").textContent = user.email;
+  }
+
+  function logout() {
+    localStorage.removeItem("user");
+    window.location.href = "login.html";
+  }
+</script>
+   
+    
+    
+</body>
+</html>

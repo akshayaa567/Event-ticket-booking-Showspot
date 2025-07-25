@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movie Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujlZH3tT3S6y/5A/Lg4q/J5w5I4e7W9JzI/kP5O2/b7Z7P07i/K2wF/R7B9w4Q0h5i6d6b6Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* CSS Variables for easier theming */
+    :root {
+      /* Primary Colors (Deep, Atmospheric) */
+      --primary-dark: #0A1128; /* Deep Midnight Blue */
+      --primary-darker: #1B2E4E; /* Dark Cerulean */
+      --secondary-dark: #0E404F; /* Rich Dark Teal */
+      --bg-footer: #3D2F4F; /* Deep Muted Plum (not used in this specific HTML, but kept for consistency) */
+
+      /* Accent Colors (Electric & Vibrant) */
+      --accent-primary: #00BFFF; /* Electric Blue */
+      --accent-primary-hover: #00A6D9; /* Slightly darker Electric Blue for hover */
+
+      /* Text Colors (Clean & Readable) */
+      --text-light: #F8F8F8; /* Very light off-white */
+      --text-muted: #A0A0A0; /* Light Gray for secondary text/details */
+      --text-dark: #212529; /* Standard dark for contrast where needed (not used in this HTML) */
+
+      /* Glassmorphism Effects */
+      --bg-glass: rgba(255, 255, 255, 0.08); /* Semi-transparent white background for "glass" elements */
+      --bg-glass-hover: rgba(255, 255, 255, 0.15); /* A slightly less transparent version for hover states */
+      --border-glass: rgba(255, 255, 255, 0.1); /* Subtle, light border for glass elements */
+      --shadow-glass: rgba(0, 0, 0, 0.2); /* Soft, dark shadow for "floating" effect */
+    }
+.navbar {
+    background-color: rgba(30, 30, 30, 0.95) !important; /* Semi-transparent dark for navbar */
+    box-shadow: 0 2px 10px var(--shadow-dark-subtle);
+    border-bottom: 1px solid var(--border-dark);
+    transition: background-color 0.3s ease;
+    position:relative;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--color-accent-blue) !important; /* Brand name in accent blue */
+}
+
+.nav-link {
+    color: var(--color-text-light) !important;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--color-accent-blue-hover) !important; /* Blue on hover */
+}
+:root {
+    --color-accent-blue-hover: #00aaff; /* Example hover blue color */
+    /* ... other variables ... */
+}
+:root {
+    --color-accent-blue: #007bff; /* Or whatever blue color you want */
+    /* ... other variables ... */
+}
+
+/* Additional adjustment for btn-primary1 */
+.btn-primary1 {
+    background-color: var(--color-accent-blue);
+    color: var(--color-text-light);
+    padding: 0.7em 1.4em;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25);
+}
+.btn-primary1:hover {
+    background-color: var(--color-accent-blue-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+    body {
+      background: black; /* Changed to black */
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      padding: 30px 10px;
+      overflow-x: hidden;
+      color: var(--text-light); /* Default text color */
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-weight: bold;
+      color: var(--text-light);
+      letter-spacing: 1.5px; /* More spacing for titles */
+      position: relative;
+      padding-bottom: 15px;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background-color: var(--accent-primary); /* Accent color for underline */
+      border-radius: 5px;
+    }
+
+    .slider-container {
+      position: relative;
+      padding: 40px 20px;
+      margin-bottom: 60px;
+    }
+
+    .scroll-banner {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 25px; /* Consistent gap */
+      padding: 20px 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .scroll-banner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .movie-card, .pre-release-movie-card {
+      flex: 0 0 auto;
+      width: 280px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--bg-glass); /* Glassmorphism background */
+      backdrop-filter: blur(15px); /* Glassmorphism blur */
+      border: 1px solid var(--border-glass); /* Glassmorphism border */
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+      box-shadow: 0 8px 20px var(--shadow-glass); /* Glassmorphism shadow */
+      position: relative;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .movie-card:hover, .pre-release-movie-card:hover {
+      transform: translateY(-12px) scale(1.04); /* More lift and scale on hover */
+      box-shadow: 0 18px 40px var(--shadow-glass); /* Even deeper shadow on hover */
+      background: var(--bg-glass-hover); /* Glassmorphism hover background */
+    }
+
+    .movie-card img, .pre-release-movie-card img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      border-radius: 18px 18px 0 0;
+      transition: transform 0.3s ease;
+    }
+
+    .movie-card:hover img, .pre-release-movie-card:hover img {
+      transform: scale(1.1); /* Stronger image zoom */
+    }
+
+    .movie-card .info, .pre-release-movie-card .info {
+      padding: 18px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: transparent; /* No explicit background, let glass effect show */
+      color: var(--text-light); /* Light text on dark info background */
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid var(--border-glass); /* Border to separate image from info */
+    }
+
+    .movie-card h6 {
+      font-size: 19px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--text-light); /* Light text for title */
+      text-transform: capitalize;
+      line-height: 1.3;
+    }
+
+    .rating {
+      font-size: 16px;
+      color: var(--accent-primary); /* Electric Blue for rating */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    .rating i {
+      color: var(--accent-primary);
+      font-size: 15px;
+    }
+
+    .btn-warning { /* Renamed to .btn-primary equivalent in terms of styling */
+      padding: 10px 20px;
+      font-size: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      background-color: var(--accent-primary); /* Electric Blue for button */
+      border-color: var(--accent-primary);
+      color: white; /* White text on accent button */
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px var(--shadow-glass);
+    }
+
+    .btn-warning:hover {
+      background-color: var(--accent-primary-hover); /* Slightly darker Electric Blue on hover */
+      border-color: var(--accent-primary-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px var(--shadow-glass);
+    }
+
+    .btn-warning:active {
+      transform: translateY(2px);
+      background-color: var(--accent-primary-hover); /* Even darker on active */
+      border-color: var(--accent-primary-hover);
+      box-shadow: 0 2px 5px var(--shadow-glass);
+    }
+
+    .slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--bg-glass); /* Glassmorphism background for arrows */
+      backdrop-filter: blur(10px); /* Slightly less blur for arrows */
+      border: 1px solid var(--border-glass); /* Subtle border for arrows */
+      color: var(--text-light);
+      font-size: 36px;
+      padding: 15px 22px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 6px 15px var(--shadow-glass);
+      transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
+      opacity: 0.8; /* Slightly more opaque when idle */
+    }
+
+    .slider-arrow:hover {
+      background-color: var(--bg-glass-hover); /* Darker on hover */
+      transform: translateY(-50%) scale(1.15);
+      opacity: 1;
+    }
+
+    .arrow-left {
+      left: 0px;
+    }
+
+    .arrow-right {
+      right: 0px;
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: 800;
+      margin: 60px 20px 30px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 2.5px; /* Increased letter spacing for emphasis */
+      text-shadow: 2px 2px 6px var(--shadow-glass); /* Stronger text shadow */
+      position: relative;
+      padding-bottom: 15px;
+      background: var(--bg-glass); /* Glassmorphism background for section titles */
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      padding-left: 20px;
+      box-shadow: 0 4px 10px var(--shadow-glass);
+      border-left: 5px solid var(--accent-primary); /* Accent primary left border */
+      display: flex;
+      align-items: center;
+      min-height: 60px; /* Ensure a decent height for the title bar */
+    }
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0; /* Changed to left 0 for the accent border */
+        bottom: 0;
+        width: 0; /* Remove underline, replaced by left border */
+        height: 0;
+        background-color: transparent;
+        border-radius: 0;
+    }
+
+    .glass-container {
+      background: var(--bg-glass); /* Glassmorphism background */
+      backdrop-filter: blur(15px); /* Glassmorphism blur */
+      border-radius: 20px;
+      box-shadow: 0 15px 40px var(--shadow-glass);
+      padding: 30px;
+      margin-bottom: 60px;
+      border: 1px solid var(--border-glass);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .carousel-row {
+      display: flex;
+      overflow-x: auto;
+      gap: 25px;
+      padding: 15px 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .carousel-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Keyframe Animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+      .movie-card, .pre-release-movie-card {
+        width: 240px;
+        height: auto;
+      }
+      .movie-card img, .pre-release-movie-card img {
+        height: 350px;
+      }
+      .slider-arrow {
+        font-size: 30px;
+        padding: 12px 18px;
+      }
+      .arrow-left { left: -10px; }
+      .arrow-right { right: -10px; }
+      .section-title {
+        font-size: 28px;
+        margin: 50px 15px 25px;
+      }
+      .glass-container {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .movie-card, .pre-release-movie-card {
+        width: 200px;
+      }
+      .movie-card img, .pre-release-movie-card img {
+        height: 300px;
+      }
+      .slider-arrow {
+        font-size: 26px;
+        padding: 10px 15px;
+        top: 45%;
+      }
+      .arrow-left { left: -15px; }
+      .arrow-right { right: -15px; }
+      h2 {
+        font-size: 28px;
+        margin-bottom: 30px;
+      }
+      h2::after {
+        width: 80px;
+      }
+      .section-title {
+        font-size: 24px;
+        margin: 40px 10px 20px;
+      }
+      .section-title::after {
+        width: 100px;
+      }
+      .glass-container {
+        padding: 15px;
+        margin-bottom: 40px;
+      }
+      .movie-card .info, .pre-release-movie-card .info {
+        min-height: 100px;
+        padding: 12px;
+      }
+      .btn-warning {
+        padding: 8px 15px;
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      body {
+        padding: 15px 5px;
+      }
+      .movie-card, .pre-release-movie-card {
+        width: 160px;
+      }
+      .movie-card img, .pre-release-movie-card img {
+        height: 250px;
+      }
+      .slider-arrow {
+        font-size: 20px;
+        padding: 8px 10px;
+        left: -20px;
+        right: -20px;
+      }
+      h2 {
+        font-size: 24px;
+        margin-bottom: 30px;
+      }
+      .section-title {
+        font-size: 20px;
+        margin: 30px 5px 15px;
+      }
+      .glass-container {
+        padding: 10px;
+        border-radius: 15px;
+      }
+      .movie-card h6 {
+        font-size: 16px;
+      }
+      .rating {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container py-2">
+            <a class="navbar-brand" href="#"> <img src="images/logo.png" alt="ShowSpot Logo" height="60"> </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center me-3">
+                    <li class="nav-item px-2"><a class="nav-link" href="movieslist.html">Movies</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="concerts.html">Concerts</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="stadiumbook.html">Sports</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="comedy.html">Comedy</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="aboutpage.html">About</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="contactpage.html">Contact</a></li>
+                    <li class="nav-item px-2">
+                        <a href="login.html" class="btn btn-primary1">Login</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a href="signinpage.html" class="btn btn-primary1">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  <h2 class="section-title">🎬 Re-Release Movies</h2>
+
+  <div class="slider-container">
+    
+    <div class="scroll-banner" id="preReleaseMovieSlider">
+      <div class="pre-release-movie-card">
+        <img src="images/Andala Rakshasi.jpg" alt="Andhala Rakshasi">
+        <div class="info">Andhala Rakshasi</div>
+      </div>
+      <div class="pre-release-movie-card">
+        <img src="images/eega.jpg" alt="Khaleja">
+        <div class="info">Eega</div>
+      </div>
+      <div class="pre-release-movie-card">
+        <img src="images/deshamuduru.jpg" alt="Khaleja">
+        <div class="info">Desamuduru</div>
+      </div>
+
+      <div class="pre-release-movie-card">
+        <img src="https://i.pinimg.com/736x/dd/de/15/ddde15451f7d242bbd41c4c4d6da34b7.jpg" alt="Jalsa">
+        <div class="info">Jalsa</div>
+      </div>
+      <div class="pre-release-movie-card">
+        <img src="images/murari.jpg" alt="Khaleja">
+        <div class="info">Murari</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="movieSections"></div>
+
+  <script>
+    const movies = [
+      // Hindi
+      { name: "Pathaan", lang: "Hindi", poster: "https://i.pinimg.com/736x/6a/6d/b9/6a6db9a959576836fd5c42c8bc41d565.jpg", rating: 4.5 },
+      { name: "Jawan", lang: "Hindi", poster: "https://images.filmibeat.com/img/popcorn/movie_posters/jawan-hin-20230901110502-2935.jpg", rating: 4.4 },
+      { name: "Gadar 2", lang: "Hindi", poster: "https://m.media-amazon.com/images/M/MV5BODEyN2Q1ZjctMjJhYy00NzAyLTljMmYtNWRjZGZlMzQ4NTg5XkEyXkFqcGc@.V1.jpg", rating: 4.3 },
+      { name: "Animal", lang: "Hindi", poster: "https://i.pinimg.com/originals/bc/fe/47/bcfe47b4b2fbcb1dd40cef44569d6d81.jpg", rating: 4.7 },
+      { name: "Shershaah", lang: "Hindi", poster: "https://img.rgstatic.com/content/movie/0840a6f6-5363-434c-b6c0-ea043a6dd82d/poster-342.jpg", rating: 4.8 },
+
+      // Telugu
+      { name: "RRR", lang: "Telugu", poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7CaBnSpNxmGTj9VXGQL2yOZCbAA7s7G9X4w&s", rating: 4.9 },
+      { name: "Pushpa2", lang: "Telugu", poster: "https://i.pinimg.com/736x/31/b1/ea/31b1ea4c9e3d8302460b69f00e31c74a.jpg", rating: 4.6 },
+      { name: "kaalki", lang: "Telugu", poster: "https://www.lab-1.nl/wp-content/uploads/2024/06/Kalki-2898-AD-Telugu-420x502.jpg", rating: 4.5 },
+      { name: "Sarkaru Vaari Paata", lang: "Telugu", poster: "https://m.media-amazon.com/images/M/MV5BYjI0M2Q5MzgtNzBkZi00ZGE4LTgxZGEtYTk2NWI2NmY3MDZhXkEyXkFqcGc@.V1.jpg", rating: 4.1 },
+
+      { name: "Anaganga", lang:"Telugu", poster:"https://telugu.filmyfocus.com/wp-content/uploads/2025/05/Anaganaga-Review.jpg", rating:4.8},
+
+      // English
+      { name: "Avatar 2", lang: "English", poster: "https://cdna.artstation.com/p/assets/images/images/031/645/214/large/shreyas-raut-avatar-2.jpg?1604210989&dl=2", rating: 4.7 },
+      { name: "Iron Man", lang: "English", poster: "https://m.media-amazon.com/images/I/71rNJQ2g-EL.AC_SY679.jpg", rating: 4.6 },
+      { name: "Avengers: Endgame", lang: "English", poster: "https://m.media-amazon.com/images/I/81ExhpBEbHL.AC_SY741.jpg", rating: 4.9 },
+      { name: "The Batman", lang: "English", poster: "https://m.media-amazon.com/images/I/81p+xe8cbnL.AC_SY741.jpg", rating: 4.5 },
+
+      // Malayalam
+      { name: "Lucifer", lang: "Malayalam", poster: "https://i.pinimg.com/564x/77/94/08/7794082cd432f142b237dd4555962f04.jpg", rating: 4.6 },
+      { name: "Drishyam", lang: "Malayalam", poster: "https://mir-s3-cdn-cf.behance.net/projects/404/322919150162589.Y3JvcCwxMDM4LDgxMSwwLDMz.jpg", rating: 4.8 },
+      { name: "2018", lang: "Malayalam", poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyZmaDXnpt5aA0oWRg-r1XF5bUei4rFg4aXQ&s", rating: 4.9 },
+      { name: "Jana Gana Mana", lang: "Malayalam", poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSecNu2-MUnzqjHV5cRDgDgInG0EdfPrNqiMg&s", rating: 4.5 },
+    ];
+
+    const languages = ["Hindi", "English", "Telugu", "Malayalam"];
+    const movieSectionsContainer = document.getElementById("movieSections");
+
+    languages.forEach(language => {
+      const langMovies = movies.filter(m => m.lang === language);
+      const section = document.createElement('div');
+      section.className = "glass-container";
+
+      const title = document.createElement('div');
+      title.className = "section-title";
+      title.innerText = language + " Movies";
+      section.appendChild(title);
+
+      const row = document.createElement('div');
+      row.className = "carousel-row";
+      row.id = `${language.toLowerCase()}MovieSlider`; // Add a unique ID for each row
+      section.appendChild(row); // Append the row to the section before populating
+
+      langMovies.forEach(movie => {
+        const card = document.createElement('div');
+        card.className = "movie-card";
+
+        card.innerHTML = `
+          <img src="${movie.poster}" alt="${movie.name}">
+          <div class="info">
+            <h6>${movie.name}</h6>
+            <div class="rating"><i class="fas fa-star"></i> ${movie.rating}</div>
+            <button class="btn btn-warning btn-sm" onclick="bookMovie('${movie.name}', '${movie.poster}')">Book Now</button>
+          </div>
+        `;
+
+        row.appendChild(card);
+      });
+
+      movieSectionsContainer.appendChild(section);
+    });
+
+    // Updated bookMovie function to pass movie name and poster
+    function bookMovie(movieName, moviePoster) {
+      const encodedMovie = encodeURIComponent(movieName);
+      const encodedPoster = encodeURIComponent(encodeURIComponent(moviePoster)); // Double encode poster URL
+      window.location.href = `seatselct.html?movie=${encodedMovie}&poster=${encodedPoster}`;
+    }
+
+    // Function to handle continuous, bidirectional auto-scrolling for a specific carousel
+    function autoScrollCarousel(carouselId, scrollStep = 1, intervalTime = 20) {
+      const carousel = document.getElementById(carouselId);
+      if (!carousel) {
+        console.warn(`Carousel with ID '${carouselId}' not found for auto-scrolling.`);
+        return;
+      }
+
+      let direction = 1; // 1 for right, -1 for left
+
+      // Store interval ID to clear it later if needed (e.g., on manual scroll start)
+      carousel.autoScrollInterval = setInterval(() => {
+        // Only scroll if there's content to scroll
+        if (carousel.scrollWidth > carousel.clientWidth) {
+          if (direction === 1) {
+            carousel.scrollLeft += scrollStep;
+            // Check if we've reached the end (or close to it)
+            if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - scrollStep) {
+              direction = -1;
+            }
+          } else {
+            carousel.scrollLeft -= scrollStep;
+            // Check if we've reached the beginning (or close to it)
+            if (carousel.scrollLeft <= scrollStep) {
+              direction = 1;
+            }
+          }
+        }
+      }, intervalTime);
+    }
+
+    // Initialize auto-scrolling for the "Re-Release Movies" section
+    autoScrollCarousel("preReleaseMovieSlider");
+
+    // Initialize auto-scrolling for each language movie section
+    languages.forEach(language => {
+      autoScrollCarousel(`${language.toLowerCase()}MovieSlider`);
+    });
+
+    // Manual scroll functions (left and right arrows) - these are separate from auto-scroll
+    function scrollLeft(id) {
+      const container = document.getElementById(id);
+      // Optional: Clear auto-scroll when manual scroll is initiated
+      // if (container.autoScrollInterval) {
+      //   clearInterval(container.autoScrollInterval);
+      // }
+      container.scrollBy({ left: -630, behavior: 'smooth' });
+    }
+
+    function scrollRight(id) {
+      const container = document.getElementById(id);
+      // Optional: Clear auto-scroll when manual scroll is initiated
+      // if (container.autoScrollInterval) {
+      //   clearInterval(container.autoScrollInterval);
+      // }
+      container.scrollBy({ left: 630, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

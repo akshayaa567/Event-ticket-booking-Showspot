@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Concert Events</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white min-h-screen p-8 font-sans">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold text-center mb-8">Book Your Music Concert!</h1>
+
+    <!-- Event Listing Page -->
+    <div id="eventListingPage" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg flex flex-col justify-between">
+        <img src="images/ARRAHMAN.jpg" alt="AR Rahman" class="w-full h-48 object-cover">
+        <div class="p-4 flex flex-col justify-between h-full">
+          <h2 class="text-xl font-bold">AR Rahman Live</h2>
+          <p class="text-sm text-gray-400 truncate">Suchitra Prabhat Cinemas: 4K RGB Laser Dolby Atmos, Hyderabad</p>
+          <p class="text-blue-400 font-semibold mt-2">₹1800 onwards</p>
+          <button onclick="selectEvent('AR Rahman Live','Suchitra Prabhat Cinemas: 4K RGB Laser Dolby Atmos, Hyderabad',1800, 'images/ARRAHMAN.jpg')" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 py-2 rounded">Select Event</button>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg flex flex-col justify-between">
+        <img src="images/arjithsingh.jpeg" alt="Arijit Singh" class="w-full h-48 object-cover">
+        <div class="p-4 flex flex-col justify-between h-full">
+          <h2 class="text-xl font-bold">Arjith Singh Live</h2>
+          <p class="text-sm text-gray-400">INOX Forum Mall, Bangalore</p>
+          <p class="text-blue-400 font-semibold mt-2">₹3300 onwards</p>
+          <button onclick="selectEvent('Arjith Singh Live','INOX Forum Mall, Bangalore',3300, 'images/arjithsingh.jpeg')" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 py-2 rounded">Select Event</button>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg flex flex-col justify-between">
+        <img src="images/shreyagoshal.jpg" alt="Shreya Ghoshal" class="w-full h-48 object-cover">
+        <div class="p-4 flex flex-col justify-between h-full">
+          <h2 class="text-xl font-bold">Shreya Goshal Live</h2>
+          <p class="text-sm text-gray-400">NSCI Dome, Mumbai</p>
+          <p class="text-blue-400 font-semibold mt-2">₹1500 onwards</p>
+          <button onclick="selectEvent('Shreya Goshal Live','NSCI Dome, Mumbai',1500, 'images/shreyagoshal.jpg')" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 py-2 rounded">Select Event</button>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg flex flex-col justify-between">
+        <img src="images/sidsriram.jpeg" alt="Sid Sriram" class="w-full h-48 object-cover">
+        <div class="p-4 flex flex-col justify-between h-full">
+          <h2 class="text-xl font-bold">Sid Sriram Live</h2>
+          <p class="text-sm text-gray-400">Indiranagar Social, Bangalore</p>
+          <p class="text-blue-400 font-semibold mt-2">₹1000 onwards</p>
+          <button onclick="selectEvent('Sid Sriram Live','Indiranagar Social, Bangalore',1000, 'images/sidsriram.jpeg')" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 py-2 rounded">Select Event</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seat Booking Section -->
+    <div id="bookingSection" class="hidden bg-gray-900 p-6 rounded-lg">
+      <div id="eventBanner" class="mb-6"></div>
+      <h2 class="text-xl font-semibold mb-4">Select Date & Time</h2>
+      <div class="flex flex-wrap gap-2 mb-4">
+        <button class="date-btn bg-gray-800 hover:bg-blue-700 px-4 py-2 rounded">July 10</button>
+        <button class="date-btn bg-gray-800 hover:bg-blue-700 px-4 py-2 rounded">July 11</button>
+      </div>
+      <div class="flex flex-wrap gap-2 mb-6">
+        <button class="time-btn bg-gray-800 hover:bg-blue-700 px-4 py-2 rounded">6:00 PM</button>
+        <button class="time-btn bg-gray-800 hover:bg-blue-700 px-4 py-2 rounded">8:00 PM</button>
+      </div>
+
+      <h2 class="text-xl font-semibold mb-4">Select Your Seats</h2>
+      <div class="bg-gray-800 p-4 rounded">
+        <div class="text-center mb-2">STAGE</div>
+        <div id="seatMap" class="space-y-2"></div>
+        <div id="selectedSeatsDisplay" class="mt-4 hidden">
+          Selected Seats: <span id="selectedSeatsList" class="text-blue-400"></span>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <p class="text-lg">Total: <span id="totalAmount" class="font-bold">₹0</span></p>
+        <button id="payBtn" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 py-2 px-4 rounded disabled:opacity-50" disabled>Pay</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const seatMap = document.getElementById("seatMap");
+    const selectedSeatsList = document.getElementById("selectedSeatsList");
+    const selectedSeatsDisplay = document.getElementById("selectedSeatsDisplay");
+    const totalAmount = document.getElementById("totalAmount");
+    const payBtn = document.getElementById("payBtn");
+    const bookingSection = document.getElementById("bookingSection");
+    const eventBanner = document.getElementById("eventBanner");
+    const eventListingPage = document.getElementById("eventListingPage");
+
+    let selectedSeats = [];
+    let selectedDate = '';
+    let selectedTime = '';
+    let selectedEvent = '';
+    let selectedVenue = '';
+    let pricePerSeat = 0;
+
+    function selectEvent(eventName, venue, price, imageUrl) {
+      selectedEvent = eventName;
+      selectedVenue = venue;
+      pricePerSeat = price;
+
+      eventBanner.innerHTML = `
+        <div class="flex items-center gap-4 mb-4">
+          <img src="${imageUrl}" alt="${eventName}" class="w-24 h-24 rounded-lg object-cover border border-gray-700">
+          <div>
+            <h2 class="text-2xl font-bold">${eventName}</h2>
+            <p class="text-sm text-gray-400">${venue}</p>
+            <p class="text-blue-400 font-medium mt-1">₹${price} per ticket</p>
+          </div>
+        </div>
+      `;
+
+      bookingSection.classList.remove("hidden");
+      eventListingPage.classList.add("hidden");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    const rows = "ABCDEFGH";
+    for (let row of rows) {
+      const rowDiv = document.createElement("div");
+      rowDiv.classList.add("flex", "gap-1", "items-center");
+      const rowLabel = document.createElement("div");
+      rowLabel.textContent = row;
+      rowLabel.classList.add("w-5");
+      rowDiv.appendChild(rowLabel);
+      for (let i = 1; i <= 30; i++) {
+        const seatId = row + i;
+        const seat = document.createElement("button");
+        seat.textContent = i;
+        seat.classList.add("seat", "w-8", "h-8", "rounded", "bg-green-500", "hover:bg-blue-500");
+        seat.addEventListener("click", () => {
+          if (selectedSeats.includes(seatId)) {
+            selectedSeats = selectedSeats.filter(s => s !== seatId);
+            seat.classList.remove("bg-blue-600");
+            seat.classList.add("bg-green-500");
+          } else {
+            selectedSeats.push(seatId);
+            seat.classList.remove("bg-green-500");
+            seat.classList.add("bg-blue-600");
+          }
+          updateSummary();
+        });
+        rowDiv.appendChild(seat);
+      }
+      seatMap.appendChild(rowDiv);
+    }
+
+    function updateSummary() {
+      if (selectedSeats.length > 0) {
+        selectedSeatsDisplay.classList.remove("hidden");
+        selectedSeatsList.textContent = selectedSeats.join(", ");
+        payBtn.disabled = false;
+        totalAmount.textContent = `₹${selectedSeats.length * pricePerSeat}`;
+      } else {
+        selectedSeatsDisplay.classList.add("hidden");
+        payBtn.disabled = true;
+        totalAmount.textContent = "₹0";
+      }
+    }
+
+    document.querySelectorAll(".date-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".date-btn").forEach(b => b.classList.remove("bg-blue-600"));
+        btn.classList.add("bg-blue-600");
+        selectedDate = btn.textContent;
+      });
+    });
+    document.querySelectorAll(".time-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".time-btn").forEach(b => b.classList.remove("bg-blue-600"));
+        btn.classList.add("bg-blue-600");
+        selectedTime = btn.textContent;
+      });
+    });
+
+    payBtn.addEventListener("click", () => {
+      if (!selectedDate || !selectedTime || selectedSeats.length === 0) {
+        alert("Please select date, time and at least one seat.");
+        return;
+      }
+      const bookingId = `BK${Date.now().toString().slice(-6)}`;
+      const params = new URLSearchParams({
+        event: selectedEvent,
+        venue: selectedVenue,
+        date: selectedDate,
+        time: selectedTime,
+        seats: selectedSeats.join(','),
+        amount: selectedSeats.length * pricePerSeat,
+        bookingId: bookingId
+      });
+      window.location.href = `Paynow.html?${params.toString()}`;
+    });
+  </script>
+</body>
+</html>

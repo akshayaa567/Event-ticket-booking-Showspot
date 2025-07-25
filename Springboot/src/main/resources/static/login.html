@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - EventNest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary-dark: #0f0f13;
+      --primary-darker: #0a0a0e;
+      --accent-blue: #4070f4;
+      --accent-blue-hover: #3360cc;
+      --secondary-dark: #1a1a2e;
+      --text-light: #f8f9fa;
+      --text-muted: #adb5bd;
+      --text-dark: #212529;
+      --bg-card: #1e1e2f;
+      --bg-section: #141420;
+      --bg-footer: #0a0a12;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-dark) 50%, var(--secondary-dark) 100%);
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      max-width: 420px;
+      width: 100%;
+      padding: 30px;
+      background: rgba(30, 30, 47, 0.85);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(64, 112, 244, 0.25);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--accent-blue);
+    }
+
+    .form-label {
+      color: var(--text-light);
+    }
+
+    .input-group-text {
+      background-color: #141420;
+      border: none;
+      color: var(--text-light);
+    }
+
+    .form-control {
+    color: whitesmoke;
+      background-color: #121219;
+      border: 1px solid #2e2e42;
+      color: var(--text-light);
+    }
+
+ .form-control:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 0.2rem rgba(64, 112, 244, 0.2);
+  background-color: #1e1e2f;
+}
+
+/* 🔒 Always show white text in password field */
+#password {
+  color: white !important;
+}
+
+/* ✍ Support for Chrome/Edge autofill */
+#password:-webkit-autofill {
+  -webkit-text-fill-color: white !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* 💬 Optional: light gray placeholder */
+#password::placeholder {
+  color: #ccc;
+  opacity: 0.8;
+}
+ 
+    .btn-primary {
+      background-color: var(--accent-blue);
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-blue-hover);
+    }
+
+    .text-info {
+      color: var(--accent-blue) !important;
+    }
+
+    a.text-info:hover {
+      text-decoration: underline;
+      color: var(--accent-blue-hover) !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2 id="loginTitle">User Login</h2>
+    <form id="loginForm">
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+          <input type="email" class="form-control" id="email" required />
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Password</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+          <input type="password" class="form-control" id="password" required />
+        </div>
+      </div>
+      <div class="d-grid mb-3">
+  <button type="submit" id="loginBtn" class="btn btn-primary">Login</button>
+</div>
+      
+    </form>
+   <div class="text-center mt-3">
+  <p>Don't have an account?</p>
+  <div class="d-flex justify-content-center gap-2">
+    <a href="signinpage.html" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+      <i class="bi bi-person-plus-fill me-2"></i> Sign Up
+    </a>
+    <a href="#" onclick="switchToAdminLogin()" class="btn btn-outline-danger btn-sm rounded-pill px-4">
+  <i class="bi bi-shield-lock-fill me-2"></i> Only for Admins
+</a>
+    
+  </div>
+</div>
+  </div>
+   <div class="text-center mt-3"></div>
+   <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background: var(--bg-card); border-radius: 12px; color: var(--text-light);">
+      <div class="modal-header" style="border-bottom: 1px solid #2e2e42;">
+        <h5 class="modal-title" id="adminLoginModalLabel" style="color: var(--accent-blue);">Admin Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
+      </div>
+      <div class="modal-body">
+        <form id="adminLoginForm">
+          <div class="mb-3">
+            <label for="adminEmail" class="form-label">Admin Email</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+              <input type="email" class="form-control" id="adminEmail" required />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label for="adminPassword" class="form-label">Admin Password</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+              <input type="password" class="form-control" id="adminPassword" required />
+            </div>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Login as Admin</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <script>
+  let isAdminMode = false;
+
+  // When "Only for Admins" button is clicked
+  function switchToAdminLogin() {
+    isAdminMode = true;
+
+    document.getElementById("loginTitle").innerText = "Admin Login";
+    document.getElementById("loginBtn").innerText = "Login as Admin";
+
+    // Optional style to visually show admin mode
+    const formBox = document.querySelector(".login-container");
+    formBox.style.border = "2px solid red";
+    formBox.style.boxShadow = "0 0 20px rgba(255, 0, 0, 0.5)";
+  }
+
+  // When login form is submitted
+  document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const endpoint = isAdminMode
+      ? "http://localhost:8080/api/auth/admin-login"
+      : "http://localhost:8080/api/auth/login";
+
+    fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    })
+    .then(res => {
+      if (!res.ok) {
+        return res.text().then(errorMsg => {
+          throw new Error(errorMsg || "Login failed.");
+        });
+      }
+      return res.json(); // ✅ Fixed here
+    })
+    .then(user => {
+      alert("Login Success!");
+
+      if (isAdminMode) {
+        localStorage.setItem("adminUser", JSON.stringify(user));
+        window.location.href = "admindashbord.html";
+      } else {
+        localStorage.setItem("user", JSON.stringify(user));
+        window.location.href = "landingpage.html";
+      }
+    })
+    .catch(err => {
+      alert("Login failed: " + err.message);
+    });
+  });
+</script>
+  
+  
+</body>
+</html>
